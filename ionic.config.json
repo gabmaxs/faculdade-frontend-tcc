@@ -1,0 +1,8 @@
+{
+  "name": "frontend-tcc",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue",
+  "id": "e18ec778"
+}
