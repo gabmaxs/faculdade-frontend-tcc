@@ -51,9 +51,11 @@ export default  {
 
     const handleClick = (value: string, key: any) => {
       if(value == "add") {
-        arrayIgredients.value.unshift({
-          color: "danger",
-          icon: trashOutline,
+        arrayIgredients.value[arrayIgredients.value.length-1].color = "danger"
+        arrayIgredients.value[arrayIgredients.value.length-1].icon = trashOutline
+        arrayIgredients.value.push({
+          color: "primary",
+          icon: addOutline,
           value: ""
         })
       }

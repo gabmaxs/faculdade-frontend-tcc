@@ -8,7 +8,7 @@
                 </ion-item>
             </ion-col>
             <ion-col size="2">
-              <ion-button @click="clicked" :color="color"><ion-icon :icon="icon"></ion-icon></ion-button>
+              <ion-button :disabled="modelValue === '' && color !== 'danger'" @click="clicked" :color="color"><ion-icon :icon="icon"></ion-icon></ion-button>
             </ion-col>
         </ion-row>
     </ion-grid>
@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import { IonInput, IonItem, IonLabel, IonGrid, IonRow, IonCol, IonButton, IonIcon } from '@ionic/vue'
-import { defineComponent, ref } from 'vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'IngredientSearch',
