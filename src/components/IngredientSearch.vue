@@ -4,7 +4,7 @@
             <ion-col size="10">
                 <ion-item>
                     <ion-label position="floating">Ingrediente</ion-label>
-                    <ion-input></ion-input>
+                    <ion-input @ionInput="$emit('update:modelValue', $event.target.value)" :value="modelValue"></ion-input>
                 </ion-item>
             </ion-col>
             <ion-col size="2">
@@ -16,16 +16,18 @@
 
 <script lang="ts">
 import { IonInput, IonItem, IonLabel, IonGrid, IonRow, IonCol, IonButton, IonIcon } from '@ionic/vue'
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
   name: 'IngredientSearch',
   components: { IonInput, IonItem, IonLabel, IonGrid, IonRow, IonCol, IonButton, IonIcon },
+  emits: ['update:modelValue', 'action'],
   props: {
     color: String,
-    icon: String
+    icon: String,
+    modelValue: String
   },
-  setup(props, context) {    
+  setup(props, context) { 
     const clicked = () => {
       const action = props.color === "danger" ? "delete" : "add"
       context.emit("action", action)

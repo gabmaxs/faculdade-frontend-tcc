@@ -14,7 +14,13 @@
       
       <div class="container">
         <!-- INICIO COMPONENTE INGREDIENTE -->
-        <IngredientSearch v-for="(item, key) in (arrayIgredients)" v-bind:key="key" @action="(action) => handleClick(action, key)" v-model:color="item.color" v-model:icon="item.icon" />
+        <IngredientSearch v-for="(item, key) in (arrayIgredients)" 
+          v-bind:key="key" 
+          @action="(action) => handleClick(action, key)" 
+          :color="item.color" 
+          v-model="item.value" 
+          :icon="item.icon" 
+        />
         <ion-row>
           <ion-col size="2"></ion-col>
           <ion-col size="8">
@@ -39,14 +45,16 @@ export default  {
   setup() {
     const arrayIgredients = ref([{
       color: "primary",
-      icon: addOutline
+      icon: addOutline,
+      value: ""
     }])
 
     const handleClick = (value: string, key: any) => {
       if(value == "add") {
         arrayIgredients.value.unshift({
           color: "danger",
-          icon: trashOutline
+          icon: trashOutline,
+          value: ""
         })
       }
       if(value == "delete") {
