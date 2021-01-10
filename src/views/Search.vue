@@ -14,19 +14,7 @@
       
       <div class="container">
         <!-- INICIO COMPONENTE INGREDIENTE -->
-        <IngredientSearch v-for="(item, key) in (arrayIgredients)" 
-          v-bind:key="key" 
-          @action="(action) => handleClick(action, key)" 
-          :color="item.color" 
-          v-model="item.value" 
-          :icon="item.icon" 
-        />
-        <ion-row>
-          <ion-col size="2"></ion-col>
-          <ion-col size="8">
-            <ion-button expand="block">Buscar</ion-button>
-          </ion-col>
-        </ion-row>
+        <IngredientSearch />
         <!-- FIM COMPONENTE INGREDIENTE -->
       </div>
     </ion-content>
@@ -35,40 +23,13 @@
 
 <script lang="ts">
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
-import { addOutline, trashOutline } from 'ionicons/icons';
-import IngredientSearch from '@/components/IngredientSearch.vue';
-import { ref } from 'vue';
+import IngredientSearch from '@/components/IngredientSearch/IngredientSearch.vue';
+import { defineComponent } from 'vue';
 
-export default  {
+export default defineComponent({
   name: 'Search',
   components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IngredientSearch },
-  setup() {
-    const arrayIgredients = ref([{
-      color: "primary",
-      icon: addOutline,
-      value: ""
-    }])
-
-    const handleClick = (value: string, key: any) => {
-      if(value == "add") {
-        arrayIgredients.value[arrayIgredients.value.length-1].color = "danger"
-        arrayIgredients.value[arrayIgredients.value.length-1].icon = trashOutline
-        arrayIgredients.value.push({
-          color: "primary",
-          icon: addOutline,
-          value: ""
-        })
-      }
-      if(value == "delete") {
-        arrayIgredients.value.splice(key, 1)
-      }
-    }
-    return {
-      arrayIgredients,
-      handleClick
-    }
-  }
-}
+})
 </script>
 
 <style scoped>

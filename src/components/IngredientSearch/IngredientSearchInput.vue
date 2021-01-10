@@ -19,7 +19,7 @@ import { IonInput, IonItem, IonLabel, IonGrid, IonRow, IonCol, IonButton, IonIco
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'IngredientSearch',
+  name: 'IngredientSearchInput',
   components: { IonInput, IonItem, IonLabel, IonGrid, IonRow, IonCol, IonButton, IonIcon },
   emits: ['update:modelValue', 'action'],
   props: {
