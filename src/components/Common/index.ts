@@ -1,3 +1,4 @@
 import ProgressBar from './ProgressBar.vue'
+import Toast from './Toast.vue'
 
-export { ProgressBar }
+export { ProgressBar, Toast }
