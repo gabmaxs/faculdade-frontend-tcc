@@ -19,7 +19,6 @@ export default defineComponent({
     emits: ["click"],
     setup(_, context) {
         const sendRequest = () => {
-            console.log("send request")
             context.emit("click", true)
         }
 
