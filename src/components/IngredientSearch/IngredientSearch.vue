@@ -8,6 +8,7 @@
           :icon="item.icon" 
         />
         <IngredientSearchSubmit @click="handleSubmit" />
+        <Toast :message="returnMessage" v-if="responseIsSuccessful" @onDismiss="responseIsSuccessful = false" />
     </div>
 </template>
 
@@ -17,19 +18,23 @@ import IngredientSearchSubmit from "./IngredientSearchSubmit.vue"
 import { addOutline, trashOutline } from 'ionicons/icons';
 import { defineComponent, ref } from 'vue'
 import recipeService from "@/services"
-import axios from 'axios'
+import { Toast } from "@/components/Common"
 
 export default defineComponent({
   name: 'IngredientSearch',
-  components: { IngredientSearchInput, IngredientSearchSubmit },
-  props: {
-  },
-  setup() { 
+  components: { IngredientSearchInput, IngredientSearchSubmit, Toast },
+  emits: [
+    "progress"
+  ],
+  setup(_, context) { 
     const arrayIgredients = ref([{
       color: "primary",
       icon: addOutline,
       value: ""
     }])
+
+    const responseIsSuccessful = ref(false)
+    const returnMessage = ref("")
 
     const handleAction = (value: string, key: any) => {
       if(value == "add") {
@@ -46,16 +51,30 @@ export default defineComponent({
       }
     }
 
+    const handleSuccess = ({data, message}: {data: Array<any>; message: string}) => {
+      responseIsSuccessful.value = true
+      returnMessage.value = message
+    }
+
+    const handleError = ({data, message}: {data: Array<any>; message: string}) => {
+      console.log(data, status)
+    }
+
     const handleSubmit = async () => {
+      context.emit("progress", true)
       const ingredients = arrayIgredients.value.map((item) => item.value)
       const response = await recipeService.searchRecipes(ingredients)
-      if(response.status === 200) console.log(response, response.data.args)
-      else console.log(response, response.status)
+      if(response.status === 200) handleSuccess(response.data)
+      else handleError(response)
+      context.emit("progress", false)
     }
+
     return {
       arrayIgredients,
       handleAction,
-      handleSubmit
+      handleSubmit,
+      responseIsSuccessful,
+      returnMessage
     }
   }
 });
