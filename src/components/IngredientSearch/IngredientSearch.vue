@@ -16,6 +16,7 @@ import IngredientSearchInput from "./IngredientSearchInput.vue"
 import IngredientSearchSubmit from "./IngredientSearchSubmit.vue"
 import { addOutline, trashOutline } from 'ionicons/icons';
 import { defineComponent, ref } from 'vue'
+import recipeService from "@/services"
 import axios from 'axios'
 
 export default defineComponent({
@@ -45,18 +46,11 @@ export default defineComponent({
       }
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
       const ingredients = arrayIgredients.value.map((item) => item.value)
-      axios.get("http://tcc.test/api/recipe", {
-        params: {
-          ingredients: ingredients
-        },
-        headers: {
-          Accept: "application/json"
-        }
-      })
-      .then(response => console.log(response, response.data.args))
-      .catch(({response}) => console.log(response))
+      const response = await recipeService.searchRecipes(ingredients)
+      if(response.status === 200) console.log(response, response.data.args)
+      else console.log(response, response.status)
     }
     return {
       arrayIgredients,
