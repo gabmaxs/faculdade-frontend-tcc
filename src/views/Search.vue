@@ -1,6 +1,7 @@
 <template>
   <ion-page>
     <ion-header>
+      <ProgressBar v-if="isSendingRequest" />
       <ion-toolbar>
         <ion-title>Buscar receita</ion-title>
       </ion-toolbar>
@@ -14,7 +15,7 @@
       
       <div class="container">
         <!-- INICIO COMPONENTE INGREDIENTE -->
-        <IngredientSearch />
+        <IngredientSearch @progress="handleProgress" />
         <!-- FIM COMPONENTE INGREDIENTE -->
       </div>
     </ion-content>
@@ -24,11 +25,31 @@
 <script lang="ts">
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
 import { IngredientSearch } from '@/components/IngredientSearch';
-import { defineComponent } from 'vue';
+import { ProgressBar } from '@/components/Common'
+import { defineComponent,ref } from 'vue';
 
 export default defineComponent({
   name: 'Search',
-  components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IngredientSearch },
+  components: { 
+    IonHeader, 
+    IonToolbar, 
+    IonTitle, 
+    IonContent, 
+    IonPage, 
+    IngredientSearch, 
+    ProgressBar
+  },
+  setup() {
+    const isSendingRequest = ref(false)
+    const handleProgress = (state: any) => {
+      isSendingRequest.value = state
+    }
+
+    return {
+      handleProgress,
+      isSendingRequest
+    }
+  }
 })
 </script>
 
