@@ -8,7 +8,11 @@
           :icon="item.icon" 
         />
         <IngredientSearchSubmit @click="handleSubmit" />
-        <Toast :message="returnMessage" v-if="responseIsSuccessful" @onDismiss="responseIsSuccessful = false" />
+        <Toast 
+          :message="returnMessage" 
+          v-if="responseIsSuccessful" 
+          @onDismiss="responseIsSuccessful = false" 
+        />
     </div>
 </template>
 
