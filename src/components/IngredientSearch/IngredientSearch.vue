@@ -13,6 +13,8 @@
           v-if="responseIsSuccessful" 
           @onDismiss="responseIsSuccessful = false" 
         />
+
+        <Alert :message="returnMessage" v-if="responseIsNotSuccessful" @onDismiss="responseIsNotSuccessful = false" />
     </div>
 </template>
 
@@ -22,11 +24,11 @@ import IngredientSearchSubmit from "./IngredientSearchSubmit.vue"
 import { addOutline, trashOutline } from 'ionicons/icons';
 import { defineComponent, ref } from 'vue'
 import recipeService from "@/services"
-import { Toast } from "@/components/Common"
+import { Toast, Alert } from "@/components/Common"
 
 export default defineComponent({
   name: 'IngredientSearch',
-  components: { IngredientSearchInput, IngredientSearchSubmit, Toast },
+  components: { IngredientSearchInput, IngredientSearchSubmit, Toast, Alert },
   emits: [
     "progress"
   ],
@@ -38,6 +40,7 @@ export default defineComponent({
     }])
 
     const responseIsSuccessful = ref(false)
+    const responseIsNotSuccessful = ref(false)
     const returnMessage = ref("")
 
     const handleAction = (value: string, key: any) => {
@@ -61,7 +64,9 @@ export default defineComponent({
     }
 
     const handleError = ({data, message}: {data: Array<any>; message: string}) => {
-      console.log(data, status)
+      responseIsNotSuccessful.value = true
+      returnMessage.value = message
+      console.log(data, message)
     }
 
     const handleSubmit = async () => {
@@ -78,6 +83,7 @@ export default defineComponent({
       handleAction,
       handleSubmit,
       responseIsSuccessful,
+      responseIsNotSuccessful,
       returnMessage
     }
   }
