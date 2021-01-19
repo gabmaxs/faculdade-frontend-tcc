@@ -1,7 +1,6 @@
 <template>
   <ion-page>
     <ion-header>
-      <ProgressBar v-if="isSendingRequest" />
       <ion-toolbar>
         <ion-title>Buscar receita</ion-title>
       </ion-toolbar>
@@ -14,19 +13,21 @@
       </ion-header>
       
       <div class="container">
-        <!-- INICIO COMPONENTE INGREDIENTE -->
-        <IngredientSearch @progress="handleProgress" />
-        <!-- FIM COMPONENTE INGREDIENTE -->
+        <ion-button @click="openModal = true">Digitar Ingredientes</ion-button>
+        <Modal :is-progress="isSendingRequest" title="Buscar Receita" @onDismiss="openModal = false" v-if="openModal">
+          <IngredientSearch @success="handleSuccess" @progress="handleProgress" />
+        </Modal>
       </div>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
-import { IngredientSearch } from '@/components/IngredientSearch';
-import { ProgressBar } from '@/components/Common'
-import { defineComponent,ref } from 'vue';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton } from '@ionic/vue'
+import { IngredientSearch } from '@/components/IngredientSearch'
+import { Modal } from '@/components/Common'
+import { defineComponent,ref } from 'vue'
+import Template from '@/components/Common/Modal/Template.vue'
 
 export default defineComponent({
   name: 'Search',
@@ -37,17 +38,29 @@ export default defineComponent({
     IonContent, 
     IonPage, 
     IngredientSearch, 
-    ProgressBar
+    IonButton,
+    Modal
   },
   setup() {
     const isSendingRequest = ref(false)
+    const openModal = ref(true)
+
     const handleProgress = (state: any) => {
+      console.log("progress")
       isSendingRequest.value = state
+      // openModal.value = false
+    }
+
+    const handleSuccess = (data: any) => {
+      console.log("success")
+      openModal.value = false
     }
 
     return {
       handleProgress,
-      isSendingRequest
+      isSendingRequest,
+      handleSuccess,
+      openModal
     }
   }
 })
