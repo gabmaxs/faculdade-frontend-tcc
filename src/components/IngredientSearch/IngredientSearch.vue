@@ -14,7 +14,11 @@
           @onDismiss="responseIsSuccessful = false" 
         />
 
-        <Alert :message="returnMessage" v-if="responseIsNotSuccessful" @onDismiss="responseIsNotSuccessful = false" />
+        <Alert 
+          :message="returnMessage" 
+          v-if="responseIsNotSuccessful" 
+          @onDismiss="responseIsNotSuccessful = false" 
+        />
     </div>
 </template>
 
@@ -30,7 +34,7 @@ export default defineComponent({
   name: 'IngredientSearch',
   components: { IngredientSearchInput, IngredientSearchSubmit, Toast, Alert },
   emits: [
-    "progress"
+    "progress", "success"
   ],
   setup(_, context) { 
     const arrayIgredients = ref([{
@@ -61,6 +65,7 @@ export default defineComponent({
     const handleSuccess = ({data, message}: {data: Array<any>; message: string}) => {
       responseIsSuccessful.value = true
       returnMessage.value = message
+      context.emit("success", data)
     }
 
     const handleError = ({data, message}: {data: Array<any>; message: string}) => {
@@ -73,7 +78,7 @@ export default defineComponent({
       context.emit("progress", true)
       const ingredients = arrayIgredients.value.map((item) => item.value)
       const response = await recipeService.searchRecipes(ingredients)
-      if(response.status === 200) handleSuccess(response.data)
+      if(response.status === 200) await handleSuccess(response.data)
       else handleError(response)
       context.emit("progress", false)
     }
