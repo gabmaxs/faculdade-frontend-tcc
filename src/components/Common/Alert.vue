@@ -5,7 +5,7 @@
             :header="header"
             :message="message"
             :buttons="buttons"
-            @onDidDismiss="handleDismiss(false)"
+            @onDidDismiss="handleDismiss"
         >
         </ion-alert>
     </div>
