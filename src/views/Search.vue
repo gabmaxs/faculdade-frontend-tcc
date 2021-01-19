@@ -17,6 +17,7 @@
         <Modal :is-progress="isSendingRequest" title="Buscar Receita" @onDismiss="openModal = false" v-if="openModal">
           <IngredientSearch @success="handleSuccess" @progress="handleProgress" />
         </Modal>
+        <RecipesList v-if="recipes.length > 0" :recipes-list="recipes" />
       </div>
     </ion-content>
   </ion-page>
@@ -25,6 +26,7 @@
 <script lang="ts">
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton } from '@ionic/vue'
 import { IngredientSearch } from '@/components/IngredientSearch'
+import { RecipesList } from '@/components/Recipes'
 import { Modal } from '@/components/Common'
 import { defineComponent,ref } from 'vue'
 import Template from '@/components/Common/Modal/Template.vue'
@@ -38,11 +40,13 @@ export default defineComponent({
     IonContent, 
     IonPage, 
     IngredientSearch, 
+    RecipesList,
     IonButton,
     Modal
   },
   setup() {
     const isSendingRequest = ref(false)
+    const recipes = ref([])
     const openModal = ref(true)
 
     const handleProgress = (state: any) => {
@@ -53,6 +57,7 @@ export default defineComponent({
 
     const handleSuccess = (data: any) => {
       console.log("success")
+      recipes.value = data
       openModal.value = false
     }
 
@@ -60,6 +65,7 @@ export default defineComponent({
       handleProgress,
       isSendingRequest,
       handleSuccess,
+      recipes,
       openModal
     }
   }
