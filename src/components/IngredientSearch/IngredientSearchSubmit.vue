@@ -1,8 +1,7 @@
 <template>
     <ion-grid>
         <ion-row>
-          <ion-col size="2"></ion-col>
-          <ion-col size="8">
+          <ion-col size="8" offset="2">
             <ion-button @click="sendRequest" expand="block">Buscar</ion-button>
           </ion-col>
         </ion-row>
