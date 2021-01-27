@@ -26,9 +26,14 @@ export default defineComponent({
     setup() {
         const isLoginCard = ref(true)
 
+        const handleUserLogged = () => {
+            console.log("usuario esta logado")
+        }
+
         const login = async (user: any) => {
             console.log(user)
             const response = await userService.login(user)
+            if(response.status === 200) handleUserLogged()
             console.log(response)
         }
 
