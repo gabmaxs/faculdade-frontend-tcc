@@ -5,8 +5,8 @@ import { API_URL } from "@/API_URL"
 function login(user: any) {
   return handleResponse(axios.post(`${API_URL}/auth/login`, JSON.stringify(user), {
     headers: {
-      Accept: "application/json",
-      ContentType: "application/json"
+      "Accept": "application/json",
+      "Content-Type": "application/json"
     }
   }))
 }
