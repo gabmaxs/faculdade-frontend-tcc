@@ -1,3 +1,4 @@
 import recipeService from './recipeService'
+import categoryService from './categoryService'
 
-export default recipeService
+export { recipeService, categoryService }
