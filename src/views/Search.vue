@@ -17,7 +17,7 @@
         <Modal :is-progress="isSendingRequest" title="Buscar Receita" @onDismiss="openModal = false" v-if="openModal">
           <IngredientSearch @success="handleSuccess" @progress="handleProgress" />
         </Modal>
-        <RecipesList v-if="recipes.length > 0" :recipes-list="recipes" />
+        <RecipesList v-if="recipes.length > 0" :recipeList="recipes" />
       </div>
     </ion-content>
   </ion-page>
@@ -28,8 +28,8 @@ import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton } from 
 import { IngredientSearch } from '@/components/IngredientSearch'
 import { RecipesList } from '@/components/Recipes'
 import { Modal } from '@/components/Common'
-import { defineComponent,ref } from 'vue'
-import Template from '@/components/Common/Modal/Template.vue'
+import { defineComponent, ref } from 'vue'
+import { categoryService } from '@/services'
 
 export default defineComponent({
   name: 'Search',
@@ -46,19 +46,36 @@ export default defineComponent({
   },
   setup() {
     const isSendingRequest = ref(false)
-    const recipes = ref([])
+    const recipes = ref<any>([])
     const openModal = ref(true)
+
+    const getCategoryName = async (id: number) => {
+        const response = await categoryService.getCategoryById(id)
+        return response.data.data.name
+    }
+
+    const getListWithCategory = (list: any) => {
+      const newList = list.map( async (item: any) => {
+          const name = await getCategoryName(item.id)
+          return {
+              ...item,
+              categoryName: name
+          }
+      })
+
+      return newList
+    }
 
     const handleProgress = (state: any) => {
       console.log("progress")
       isSendingRequest.value = state
-      // openModal.value = false
     }
 
-    const handleSuccess = (data: any) => {
+    const handleSuccess = async (list: any) => {
       console.log("success")
-      recipes.value = data
       openModal.value = false
+      const newList = await Promise.all(getListWithCategory(list))
+      recipes.value = newList
     }
 
     return {
