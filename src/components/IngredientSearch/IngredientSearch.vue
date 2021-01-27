@@ -27,7 +27,7 @@ import IngredientSearchInput from "./IngredientSearchInput.vue"
 import IngredientSearchSubmit from "./IngredientSearchSubmit.vue"
 import { addOutline, trashOutline } from 'ionicons/icons';
 import { defineComponent, ref } from 'vue'
-import recipeService from "@/services"
+import { recipeService } from "@/services"
 import { Toast, Alert } from "@/components/Common"
 
 export default defineComponent({
