@@ -49,39 +49,21 @@ export default defineComponent({
     const recipes = ref<any>([])
     const openModal = ref(true)
 
-    const getCategoryName = async (id: number) => {
-        const response = await categoryService.getCategoryById(id)
-        return response.data.data.name
-    }
-
-    const getListWithCategory = (list: any) => {
-      const newList = list.map( async (item: any) => {
-          const name = await getCategoryName(item.id)
-          return {
-              ...item,
-              categoryName: name
-          }
-      })
-
-      return newList
-    }
-
     const handleProgress = (state: any) => {
       console.log("progress")
       isSendingRequest.value = state
     }
 
-    const handleSuccess = async (list: any) => {
+    const handleSuccess = (list: any) => {
       console.log("success")
       openModal.value = false
-      const newList = await Promise.all(getListWithCategory(list))
-      recipes.value = newList
+      recipes.value = list
     }
 
     return {
       handleProgress,
-      isSendingRequest,
       handleSuccess,
+      isSendingRequest,
       recipes,
       openModal
     }

@@ -1,8 +1,7 @@
 <template>
     <div>
         <ion-list>
-            {{ recipeList }}
-            <ion-item v-for="recipe in recipeList" :key="recipe.id">
+            <ion-item v-for="recipe in newRecipeList" :key="recipe.id">
                 <ion-avatar slot="start">
                     <img :src="recipe.image">
                 </ion-avatar>
@@ -16,8 +15,9 @@
 </template>
 
 <script lang="ts">
+import { categoryService } from "@/services";
 import { IonList, IonItem, IonAvatar, IonLabel } from "@ionic/vue"
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
     name: "RecipesList",
@@ -27,6 +27,36 @@ export default defineComponent({
         IonItem, 
         IonAvatar, 
         IonLabel
+    },
+    setup(props) {
+        const newRecipeList = ref<any>([])
+
+        const getCategoryName = async (id: number) => {
+            const response = await categoryService.getCategoryById(id)
+            return response.data.data.name
+        }
+
+        const getListWithCategory = (list: any) => {
+            const newList = list.map( async (item: any) => {
+                const name = await getCategoryName(item.id)
+                return {
+                    ...item,
+                    categoryName: name
+                }
+            })
+
+            return newList
+        }
+
+        const init = async () => {
+            const newList = await Promise.all(getListWithCategory(props.recipeList))
+            newRecipeList.value = newList
+        }
+        init()
+
+        return {
+            newRecipeList
+        }
     }
 })
 </script>
