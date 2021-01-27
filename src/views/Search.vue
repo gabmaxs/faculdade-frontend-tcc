@@ -29,7 +29,6 @@ import { IngredientSearch } from '@/components/IngredientSearch'
 import { RecipesList } from '@/components/Recipes'
 import { Modal } from '@/components/Common'
 import { defineComponent, ref } from 'vue'
-import { categoryService } from '@/services'
 
 export default defineComponent({
   name: 'Search',
@@ -50,12 +49,10 @@ export default defineComponent({
     const openModal = ref(true)
 
     const handleProgress = (state: any) => {
-      console.log("progress")
       isSendingRequest.value = state
     }
 
     const handleSuccess = (list: any) => {
-      console.log("success")
       openModal.value = false
       recipes.value = list
     }
