@@ -5,13 +5,14 @@
         </ion-card-header>
 
         <ion-card-content>
-            <AuthCardLogin v-if="isLoginCard" @wantChange="isLoginCard = false" />
+            <AuthCardLogin v-if="isLoginCard" @wantChange="isLoginCard = false" @wantLogin="login" />
             <AuthCardRegister v-if="!isLoginCard" @wantChange="isLoginCard = true" />
         </ion-card-content>
     </ion-card> 
 </template>
 
 <script lang="ts">
+import { userService } from '@/services';
 import { IonCard, IonCardHeader, IonCardContent, IonCardTitle } from '@ionic/vue';
 import { defineComponent, ref } from 'vue'
 import AuthCardLogin from "./AuthCardLogin.vue"
@@ -25,8 +26,15 @@ export default defineComponent({
     setup() {
         const isLoginCard = ref(true)
 
+        const login = async (user: any) => {
+            console.log(user)
+            const response = await userService.login(user)
+            console.log(response)
+        }
+
         return {
-            isLoginCard
+            isLoginCard,
+            login
         }
     }
 })
