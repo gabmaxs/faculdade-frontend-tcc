@@ -33,7 +33,7 @@
             </ion-col>
         </ion-row>
         <ion-row>
-            <a @click="changeToRegister">Ja posui cadastro?</a>
+            <a @click="changeToRegister">Ja possui cadastro?</a>
         </ion-row>
         <ion-row>
             <ion-col size="8" offset="2">
