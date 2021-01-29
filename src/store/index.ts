@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 
-const user = localStorage.getItem('loggedUser')
+const user = localStorage.getItem('user')
 
 export default createStore({
   state: {
@@ -15,8 +15,8 @@ export default createStore({
   actions: {
   },
   getters: {
-    isTheUserLoggedIn: state => !!state.user.access_token,
+    isTheUserLoggedIn: state => !!state.user.token,
     getUser: state => state.user,
-    getToken: state => state.user.access_token
+    getToken: state => state.user.token
   }
 })
