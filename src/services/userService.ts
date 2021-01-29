@@ -4,6 +4,9 @@ import { API_URL } from "@/API_URL"
 import jsonWebTokenService from "jsonwebtoken"
 import store from '@/store'
 
+/* eslint-disable @typescript-eslint/camelcase */
+
+
 function createUserSession({data}) {
   const token = data.access_token
   const decoded = jsonWebTokenService.decode(token)
@@ -27,8 +30,23 @@ async function login(user: any) {
   return response
 }
 
+async function register(user: any) {
+  user.password_confirmation = user.passwordConfirmation
+  delete user.passwordConfirmation
+  const response = await handleResponse(axios.post(`${API_URL}/auth/register`, JSON.stringify(user), {
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json"
+    }
+  }))
+  if(response.status === 201) createUserSession(response.data)
+  
+  return response
+}
+
 const userService = {
-    login
+    login,
+    register
 }
 
 export default userService
