@@ -10,7 +10,8 @@ function createUserSession({data}) {
   store.commit("setUser",{
     id: decoded.id,
     name: decoded.name,
-    email: decoded.email
+    email: decoded.email,
+    token: token
   })
 }
 
