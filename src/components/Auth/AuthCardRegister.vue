@@ -4,7 +4,7 @@
             <ion-col size="12">
                 <ion-item>
                     <ion-label position="floating">Nome</ion-label>
-                    <ion-input type="text"></ion-input>
+                    <ion-input v-model="user.name" type="text"></ion-input>
                 </ion-item>
             </ion-col>
         </ion-row>
@@ -12,7 +12,7 @@
             <ion-col size="12">
                 <ion-item>
                     <ion-label position="floating">E-mail</ion-label>
-                    <ion-input type="email"></ion-input>
+                    <ion-input v-model="user.email" type="email"></ion-input>
                 </ion-item>
             </ion-col>
         </ion-row>
@@ -20,7 +20,7 @@
             <ion-col size="12">
                 <ion-item>
                     <ion-label position="floating">Senha</ion-label>
-                    <ion-input type="password"></ion-input>
+                    <ion-input v-model="user.password" type="password"></ion-input>
                 </ion-item>
             </ion-col>
         </ion-row>
@@ -28,7 +28,7 @@
             <ion-col size="12">
                 <ion-item>
                     <ion-label position="floating">Confirmar Senha</ion-label>
-                    <ion-input type="password"></ion-input>
+                    <ion-input v-model="user.passwordConfirmation" type="password"></ion-input>
                 </ion-item>
             </ion-col>
         </ion-row>
@@ -37,7 +37,7 @@
         </ion-row>
         <ion-row>
             <ion-col size="8" offset="2">
-                <ion-button expand="block">Registrar</ion-button>
+                <ion-button @click="register" expand="block">Registrar</ion-button>
             </ion-col>
         </ion-row>
     </ion-grid>
@@ -45,21 +45,34 @@
 
 <script lang="ts">
 import {  IonGrid, IonRow, IonCol, IonItem, IonLabel, IonInput, IonButton } from "@ionic/vue"
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
     name: 'AuthCardRegister',
     components: { 
         IonGrid, IonRow, IonCol, IonItem, IonLabel, IonInput, IonButton 
     },
-    emits: ["wantChange"],
+    emits: ["wantChange", "wantRegister"],
     setup(_,context) {
+        const user = ref({
+            name: '',
+            email: '',
+            password: '',
+            passwordConfirmation: ''
+        })
+
         const changeToRegister = () => {
             context.emit("wantChange", true)
         }
 
+        const register = () => {
+            context.emit("wantRegister", user.value)
+        }
+
         return {
-            changeToRegister
+            changeToRegister,
+            register,
+            user
         }
     }
 })
