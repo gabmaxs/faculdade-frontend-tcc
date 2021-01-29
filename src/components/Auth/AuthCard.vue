@@ -23,15 +23,16 @@ export default defineComponent({
     components: { 
         IonCard, IonCardHeader, IonCardContent, IonCardTitle, AuthCardLogin, AuthCardRegister
     },
-    setup() {
+    emits: ["onAuthentication"],
+    setup(_, context) {
         const isLoginCard = ref(true)
 
         const handleUserLogged = () => {
             console.log("usuario esta logado")
+            context.emit("onAuthentication", true)
         }
 
         const login = async (user: any) => {
-            console.log(user)
             const response = await userService.login(user)
             if(response.status === 200) handleUserLogged()
             console.log(response)
