@@ -14,7 +14,7 @@
 <script lang="ts">
 import { userService } from '@/services';
 import { IonCard, IonCardHeader, IonCardContent, IonCardTitle } from '@ionic/vue';
-import { defineComponent, handleError, ref } from 'vue'
+import { defineComponent, ref } from 'vue'
 import AuthCardLogin from "./AuthCardLogin.vue"
 import AuthCardRegister from "./AuthCardRegister.vue"
 
