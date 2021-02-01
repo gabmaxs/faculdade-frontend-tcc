@@ -17,7 +17,7 @@
 <script lang="ts">
 import { categoryService } from "@/services";
 import { IonList, IonItem, IonAvatar, IonLabel } from "@ionic/vue"
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onBeforeUpdate, ref } from 'vue';
 
 export default defineComponent({
     name: "RecipesList",
@@ -59,6 +59,8 @@ export default defineComponent({
             newRecipeList.value = newList
         }
         init()
+
+        onBeforeUpdate(init)
 
         return {
             newRecipeList
