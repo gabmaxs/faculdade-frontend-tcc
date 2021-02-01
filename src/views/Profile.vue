@@ -52,7 +52,6 @@ export default  defineComponent({
     const store = useStore()
     const userIsLogged = ref(store.getters.isTheUserLoggedIn)
     const handleAuthentication = () => {
-      console.log("sei que user esta logado")
       userIsLogged.value = true
     }
 
