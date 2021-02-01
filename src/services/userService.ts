@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { handleResponse } from '@/helpers'
 import { API_URL } from "@/API_URL"
 import jsonWebTokenService from "jsonwebtoken"
 import store from '@/store'
@@ -19,12 +18,12 @@ function createUserSession({data}) {
 }
 
 async function login(user: any) {
-  const response = await handleResponse(axios.post(`${API_URL}/auth/login`, JSON.stringify(user), {
+  const response = await axios.post(`${API_URL}/auth/login`, JSON.stringify(user), {
     headers: {
       "Accept": "application/json",
       "Content-Type": "application/json"
     }
-  }))
+  })
   if(response.status === 200) createUserSession(response.data)
   
   return response
@@ -33,12 +32,12 @@ async function login(user: any) {
 async function register(user: any) {
   user.password_confirmation = user.passwordConfirmation
   delete user.passwordConfirmation
-  const response = await handleResponse(axios.post(`${API_URL}/auth/register`, JSON.stringify(user), {
+  const response = await axios.post(`${API_URL}/auth/register`, JSON.stringify(user), {
     headers: {
       "Accept": "application/json",
       "Content-Type": "application/json"
     }
-  }))
+  })
   if(response.status === 201) createUserSession(response.data)
   
   return response

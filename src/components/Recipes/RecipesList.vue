@@ -32,8 +32,14 @@ export default defineComponent({
         const newRecipeList = ref<any>([])
 
         const getCategoryName = async (id: number) => {
-            const response = await categoryService.getCategoryById(id)
-            return response.data.data.name
+            try {
+                const {data} = await categoryService.getCategoryById(id)
+                return data.data.name
+            }
+            catch(e) {
+                console.log(e)
+                return ""
+            }
         }
 
         const getListWithCategory = (list: any) => {

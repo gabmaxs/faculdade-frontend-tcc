@@ -33,13 +33,23 @@ export default defineComponent({
         }
 
         const login = async (user: any) => {
-            const response = await userService.login(user)
-            if(response.status === 200) handleUserLogged()
+            try {
+                const response = await userService.login(user)
+                if(response.status === 200) handleUserLogged()
+            }
+            catch(e) {
+                console.log(e)
+            }
         }
 
         const register = async (user: any) => {
-            const response = await userService.register(user)
-            if(response.status === 201) handleUserLogged()
+            try{
+                const response = await userService.register(user)
+                if(response.status === 201) handleUserLogged()
+            }
+            catch(e) {
+                console.log(e)
+            }
         }
 
         return {
