@@ -16,25 +16,34 @@
 
 <script lang="ts">
 import { IonInput, IonItem, IonLabel, IonGrid, IonRow, IonCol, IonButton, IonIcon } from '@ionic/vue'
-import { defineComponent } from 'vue'
+import { addOutline, trashOutline } from 'ionicons/icons';
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
   name: 'IngredientSearchInput',
   components: { IonInput, IonItem, IonLabel, IonGrid, IonRow, IonCol, IonButton, IonIcon },
   emits: ['update:modelValue', 'action'],
   props: {
-    color: String,
-    icon: String,
     modelValue: String
   },
   setup(props, context) { 
+    const color = ref("primary")
+    const icon = ref(addOutline)
+
     const clicked = () => {
-      const action = props.color === "danger" ? "delete" : "add"
+      let action = "delete"
+      if(color.value !== "danger") {
+        action = "add"
+        color.value = "danger"
+        icon.value = trashOutline
+      }
       context.emit("action", action)
     }
 
     return {
-      clicked
+      clicked,
+      color,
+      icon
     }
   }
 });

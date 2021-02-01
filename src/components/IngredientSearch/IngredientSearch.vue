@@ -1,13 +1,12 @@
 <template>
     <div>
-        <IngredientSearchInput v-for="(item, key) in (arrayIgredients)" 
+        <IngredientSearchInput v-for="(item, key) in (arrayIngredients)" 
           v-bind:key="key" 
-          @action="(action) => handleAction(action, key)" 
-          :color="item.color" 
+          @action="(action) => handleAction(action, key)"  
           v-model="item.value" 
-          :icon="item.icon" 
         />
         <IngredientSearchSubmit @click="handleSubmit" />
+        
         <Toast 
           :message="returnMessage" 
           v-if="responseIsSuccessful" 
@@ -25,7 +24,6 @@
 <script lang="ts">
 import IngredientSearchInput from "./IngredientSearchInput.vue"
 import IngredientSearchSubmit from "./IngredientSearchSubmit.vue"
-import { addOutline, trashOutline } from 'ionicons/icons';
 import { defineComponent, ref } from 'vue'
 import { recipeService } from "@/services"
 import { Toast, Alert } from "@/components/Common"
@@ -37,29 +35,15 @@ export default defineComponent({
     "progress", "success"
   ],
   setup(_, context) { 
-    const arrayIgredients = ref([{
-      color: "primary",
-      icon: addOutline,
-      value: ""
-    }])
+    const arrayIngredients = ref([{value:""}])
 
     const responseIsSuccessful = ref(false)
     const responseIsNotSuccessful = ref(false)
     const returnMessage = ref("")
 
     const handleAction = (value: string, key: any) => {
-      if(value == "add") {
-        arrayIgredients.value[arrayIgredients.value.length-1].color = "danger"
-        arrayIgredients.value[arrayIgredients.value.length-1].icon = trashOutline
-        arrayIgredients.value.push({
-          color: "primary",
-          icon: addOutline,
-          value: ""
-        })
-      }
-      if(value == "delete") {
-        arrayIgredients.value.splice(key, 1)
-      }
+      if(value == "add")  arrayIngredients.value.push({value:""})
+      if(value == "delete") arrayIngredients.value.splice(key, 1)
     }
 
     const handleSuccess = ({data, message}: {data: Array<any>; message: string}) => {
@@ -76,15 +60,19 @@ export default defineComponent({
 
     const handleSubmit = async () => {
       context.emit("progress", true)
-      const ingredients = arrayIgredients.value.map((item) => item.value)
-      const response = await recipeService.searchRecipes(ingredients)
-      if(response.status === 200) await handleSuccess(response.data)
-      else handleError(response)
+      const ingredients = arrayIngredients.value.map((item) => item.value)
+      try {
+        const response = await recipeService.searchRecipes(ingredients)
+        await handleSuccess(response.data)
+      }
+      catch(e) {
+        handleError(e)
+      }
       context.emit("progress", false)
     }
 
     return {
-      arrayIgredients,
+      arrayIngredients,
       handleAction,
       handleSubmit,
       responseIsSuccessful,
