@@ -6,18 +6,8 @@
           v-model="item.value" 
         />
         <IngredientSearchSubmit @click="handleSubmit" />
-        
-        <Toast 
-          :message="returnMessage" 
-          v-if="responseIsSuccessful" 
-          @onDismiss="responseIsSuccessful = false" 
-        />
 
-        <Alert 
-          :message="returnMessage" 
-          v-if="responseIsNotSuccessful" 
-          @onDismiss="responseIsNotSuccessful = false" 
-        />
+        <Message @onDismiss="showMessage = false" :show="showMessage" :isSuccess="responseIsSuccessful" :message="returnMessage" />
     </div>
 </template>
 
@@ -26,11 +16,11 @@ import IngredientSearchInput from "./IngredientSearchInput.vue"
 import IngredientSearchSubmit from "./IngredientSearchSubmit.vue"
 import { defineComponent, ref } from 'vue'
 import { recipeService } from "@/services"
-import { Toast, Alert } from "@/components/Common"
+import { Message } from "@/components/Message"
 
 export default defineComponent({
   name: 'IngredientSearch',
-  components: { IngredientSearchInput, IngredientSearchSubmit, Toast, Alert },
+  components: { IngredientSearchInput, IngredientSearchSubmit, Message },
   emits: [
     "progress", "success"
   ],
@@ -38,8 +28,8 @@ export default defineComponent({
     const arrayIngredients = ref([{value:""}])
 
     const responseIsSuccessful = ref(false)
-    const responseIsNotSuccessful = ref(false)
     const returnMessage = ref("")
+    const showMessage = ref(false)
 
     const handleAction = (value: string, key: any) => {
       if(value == "add")  arrayIngredients.value.push({value:""})
@@ -47,14 +37,16 @@ export default defineComponent({
     }
 
     const handleSuccess = ({data, message}: {data: Array<any>; message: string}) => {
-      responseIsSuccessful.value = true
       returnMessage.value = message
+      responseIsSuccessful.value = true
+      showMessage.value = true
       context.emit("success", data)
     }
 
     const handleError = ({data, message}: {data: Array<any>; message: string}) => {
-      responseIsNotSuccessful.value = true
       returnMessage.value = message
+      responseIsSuccessful.value = false
+      showMessage.value = true
       console.log(data, message)
     }
 
@@ -72,12 +64,12 @@ export default defineComponent({
     }
 
     return {
-      arrayIngredients,
       handleAction,
       handleSubmit,
+      arrayIngredients,
       responseIsSuccessful,
-      responseIsNotSuccessful,
-      returnMessage
+      returnMessage,
+      showMessage
     }
   }
 });
