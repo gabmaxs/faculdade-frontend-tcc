@@ -28,7 +28,6 @@ export default defineComponent({
         const isLoginCard = ref(true)
 
         const handleUserLogged = () => {
-            console.log("usuario esta logado")
             context.emit("onAuthentication", true)
         }
 
