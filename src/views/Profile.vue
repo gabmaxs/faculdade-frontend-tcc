@@ -3,12 +3,18 @@
     <ion-header>
       <ion-toolbar>
         <ion-title>Perfil</ion-title>
+        <ion-buttons v-if="userIsLogged" slot="end">
+            <ion-button @click="logout"><ion-icon :icon="logOutOutline"></ion-icon></ion-button>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
           <ion-title size="large">Perfil</ion-title>
+          <ion-buttons v-if="userIsLogged" slot="end">
+            <ion-button @click="logout"><ion-icon :icon="logOutOutline"></ion-icon></ion-button>
+          </ion-buttons>
         </ion-toolbar>
       </ion-header>
       
@@ -23,7 +29,8 @@
 </template>
 
 <script lang="ts">
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonButton, IonIcon } from '@ionic/vue';
+import { logOutOutline } from 'ionicons/icons';
 import { defineComponent, ref } from 'vue'
 import { AuthCard } from '@/components/Auth'
 import { useStore } from "vuex"
@@ -36,7 +43,10 @@ export default  defineComponent({
     IonTitle, 
     IonContent, 
     IonPage,
-    AuthCard
+    AuthCard,
+    IonButtons, 
+    IonButton, 
+    IonIcon
   },
   setup() {
     const store = useStore()
@@ -46,9 +56,16 @@ export default  defineComponent({
       userIsLogged.value = true
     }
 
+    const logout = () => {
+      store.commit("removeUser")
+      userIsLogged.value = false
+    }
+
     return {
       handleAuthentication,
-      userIsLogged
+      userIsLogged,
+      logOutOutline,
+      logout
     }
   }
 })

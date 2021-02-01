@@ -10,6 +10,10 @@ export default createStore({
     setUser(state, payload) {
       state.user = payload
       localStorage.setItem("user", JSON.stringify(payload))
+    },
+    removeUser(state) {
+      state.user = {}
+      localStorage.removeItem("user")
     }
   },
   actions: {
