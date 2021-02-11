@@ -3,9 +3,6 @@ import { API_URL } from "@/API_URL"
 import jsonWebTokenService from "jsonwebtoken"
 import store from '@/store'
 
-/* eslint-disable @typescript-eslint/camelcase */
-
-
 function createUserSession({data}) {
   const token = data.access_token
   const decoded = jsonWebTokenService.decode(token)
@@ -30,8 +27,6 @@ async function login(user: any) {
 }
 
 async function register(user: any) {
-  user.password_confirmation = user.passwordConfirmation
-  delete user.passwordConfirmation
   const response = await axios.post(`${API_URL}/auth/register`, JSON.stringify(user), {
     headers: {
       "Accept": "application/json",
@@ -43,9 +38,19 @@ async function register(user: any) {
   return response
 }
 
+function getProfile(token: string) {
+  return axios.get(`${API_URL}/user/profile`, {
+    headers: {
+      "Accept": "application/json",
+      "Authorization": `Bearer ${token}`
+    }
+  })
+}
+
 const userService = {
     login,
-    register
+    register,
+    getProfile
 }
 
 export default userService
