@@ -21,9 +21,7 @@
       
       <div class="container">
         <AuthCard v-if="!userIsLogged" @progress="changeProgress" @onAuthentication="handleAuthentication"/>
-        <div v-if="userIsLogged">
-          <h1>User esta logado</h1>
-        </div>
+        <ProfileCard v-if="userIsLogged" />
       </div>
     </ion-content>
   </ion-page>
@@ -36,6 +34,7 @@ import { defineComponent, ref } from 'vue'
 import { AuthCard } from '@/components/Auth'
 import { useStore } from "vuex"
 import { ProgressBar } from "@/components/Common"
+import { ProfileCard } from "@/components/Profile"
 
 export default  defineComponent({
   name: 'Profile',
@@ -49,7 +48,8 @@ export default  defineComponent({
     IonButtons, 
     IonButton, 
     IonIcon,
-    ProgressBar
+    ProgressBar,
+    ProfileCard
   },
   setup() {
     const store = useStore()
