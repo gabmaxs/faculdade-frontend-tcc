@@ -41,7 +41,7 @@ export default defineComponent({
             context.emit("onAuthentication", true)
         }
 
-        const handleError = ({data, message}: {data: Array<any>; message: string}) => {
+        const handleError = ({message}: {message: string}) => {
             returnMessage.value = message
             responseIsSuccessful.value = false
             showMessage.value = true
