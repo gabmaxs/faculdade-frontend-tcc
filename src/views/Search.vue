@@ -4,7 +4,7 @@
       <ion-toolbar>
         <ion-title>Buscar receita</ion-title>
         <ion-buttons slot="end">
-            <ion-button @click="openModal"><ion-icon :icon="search"></ion-icon></ion-button>
+            <ion-button @click="openModal"><ion-icon :icon="searchOutline"></ion-icon></ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
@@ -13,7 +13,7 @@
         <ion-toolbar>
           <ion-title size="large">Buscar receita</ion-title>
           <ion-buttons slot="end">
-              <ion-button @click="openModal"><ion-icon :icon="search"></ion-icon></ion-button>
+              <ion-button @click="openModal"><ion-icon :icon="searchOutline"></ion-icon></ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -31,7 +31,7 @@
 
 <script lang="ts">
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonButtons, IonIcon } from '@ionic/vue'
-import { search } from 'ionicons/icons';
+import { searchOutline } from 'ionicons/icons';
 import { IngredientSearch } from '@/components/IngredientSearch'
 import { RecipesList } from '@/components/Recipes'
 import { Modal } from '@/components/Common'
@@ -82,7 +82,7 @@ export default defineComponent({
       isSendingRequest,
       recipes,
       showModal,
-      search
+      searchOutline
     }
   }
 })
