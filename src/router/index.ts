@@ -16,8 +16,8 @@ const routes: Array<RouteRecordRaw> = [
         redirect: '/tabs/search'
       },
       {
-        path: 'tab1',
-        component: () => import('@/views/Tab1.vue')
+        path: 'recipe',
+        component: () => import('@/views/RecipeRegister.vue')
       },
       {
         path: 'search',

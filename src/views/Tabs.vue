@@ -2,19 +2,19 @@
   <ion-page>
     <ion-tabs>
       <ion-tab-bar slot="bottom">
-        <ion-tab-button tab="tab1" href="/tab1">
+        <ion-tab-button tab="recipe" href="/recipe">
           <ion-icon :icon="triangle" />
-          <ion-label>Tab 1</ion-label>
+          <ion-label>Nova Receita</ion-label>
         </ion-tab-button>
           
         <ion-tab-button tab="search" href="/search">
           <ion-icon :icon="ellipse" />
-          <ion-label>Tab 2</ion-label>
+          <ion-label>Buscar Receita</ion-label>
         </ion-tab-button>
         
         <ion-tab-button tab="profile" href="/profile">
           <ion-icon :icon="square" />
-          <ion-label>Tab 3</ion-label>
+          <ion-label>Perfil</ion-label>
         </ion-tab-button>
       </ion-tab-bar>
     </ion-tabs>
