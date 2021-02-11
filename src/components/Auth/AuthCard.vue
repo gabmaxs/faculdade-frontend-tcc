@@ -35,7 +35,6 @@ export default defineComponent({
         const showMessage = ref(false)
 
         const handleUserLogged = ({message}: {message: string}) => {
-            console.log(message)
             returnMessage.value = message
             responseIsSuccessful.value = true
             showMessage.value = true
@@ -43,7 +42,6 @@ export default defineComponent({
         }
 
         const handleError = ({data, message}: {data: Array<any>; message: string}) => {
-            console.log(data, message)
             returnMessage.value = message
             responseIsSuccessful.value = false
             showMessage.value = true
@@ -53,10 +51,7 @@ export default defineComponent({
             context.emit("progress", true)
             try {
                 const response = await userService.login(user)
-                if(response.status === 200) {
-                    console.log(response)
-                    await handleUserLogged(response.data)
-                }
+                if(response.status === 200) await handleUserLogged(response.data)
             }
             catch(e) {
                 handleError(e)
