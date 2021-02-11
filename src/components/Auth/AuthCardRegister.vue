@@ -28,7 +28,7 @@
             <ion-col size="12">
                 <ion-item>
                     <ion-label position="floating">Confirmar Senha</ion-label>
-                    <ion-input v-model="user.passwordConfirmation" type="password"></ion-input>
+                    <ion-input v-model="user.password_confirmation" type="password"></ion-input>
                 </ion-item>
             </ion-col>
         </ion-row>
@@ -58,7 +58,7 @@ export default defineComponent({
             name: '',
             email: '',
             password: '',
-            passwordConfirmation: ''
+            password_confirmation: ''
         })
 
         const changeToRegister = () => {
