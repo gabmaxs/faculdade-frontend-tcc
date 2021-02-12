@@ -1,7 +1,7 @@
 <template>
     <div>
         <ion-list>
-            <ion-item v-for="recipe in newRecipeList" :key="recipe.id">
+            <ion-item v-for="recipe in newRecipeList" :key="recipe.id" @click="itemClicked(recipe.id)">
                 <ion-avatar slot="start">
                     <img :src="recipe.image">
                 </ion-avatar>
@@ -28,7 +28,8 @@ export default defineComponent({
         IonAvatar, 
         IonLabel
     },
-    setup(props) {
+    emits: ["click"],
+    setup(props,context) {
         const newRecipeList = ref<any>([])
 
         const getCategoryName = async (id: number) => {
@@ -54,6 +55,11 @@ export default defineComponent({
             return newList
         }
 
+        const itemClicked = (id) => {
+            console.log(id)
+            context.emit("click", id)
+        }
+
         const init = async () => {
             const newList = await Promise.all(getListWithCategory(props.recipeList))
             newRecipeList.value = newList
@@ -63,6 +69,7 @@ export default defineComponent({
         onBeforeUpdate(init)
 
         return {
+            itemClicked,
             newRecipeList
         }
     }
