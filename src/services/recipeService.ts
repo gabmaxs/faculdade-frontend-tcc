@@ -12,8 +12,17 @@ function searchRecipes(ingredients: string[], page = 1) {
   })
 }
 
+function getRecipe(recipeId: number) {
+  return axios.get(`${API_URL}/recipe/${recipeId}`, {
+    headers: {
+      Accept: "application/json"
+    }
+  })
+}
+
 const recipeService = {
-  searchRecipes
+  searchRecipes,
+  getRecipe
 }
 
 export default recipeService
