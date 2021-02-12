@@ -20,10 +20,13 @@
       
       <div class="container">
         <ion-button v-if="recipes.length == 0" @click="openModal">Digitar Ingredientes</ion-button>
-        <Modal :is-progress="isSendingRequest" title="Buscar Receita" @onDismiss="closeModal" v-if="showModal">
+        <Modal :is-progress="isSendingRequest" title="Buscar receita" @onDismiss="closeModal" v-if="showModal">
           <IngredientSearch @success="handleSuccess" @progress="handleProgress" />
         </Modal>
-        <RecipesList v-if="recipes.length > 0" :recipeList="recipes" />
+        <RecipesList v-if="recipes.length > 0" :recipeList="recipes" @click="handleSelectedRecipe" />
+        <Modal text-close="Voltar" v-if="selectedRecipe" title="Detalhes da receita" @onDismiss="closeModalRecipe" >
+          <Recipe :recipeId="selectedRecipe" />
+        </Modal>
       </div>
     </ion-content>
   </ion-page>
@@ -33,7 +36,7 @@
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonButtons, IonIcon } from '@ionic/vue'
 import { searchOutline } from 'ionicons/icons';
 import { IngredientSearch } from '@/components/IngredientSearch'
-import { RecipesList } from '@/components/Recipes'
+import { RecipesList, Recipe } from '@/components/Recipes'
 import { Modal } from '@/components/Common'
 import { defineComponent, ref } from 'vue'
 
@@ -47,6 +50,7 @@ export default defineComponent({
     IonPage, 
     IngredientSearch, 
     RecipesList,
+    Recipe,
     IonButton,
     IonButtons,
     IonIcon,
@@ -56,6 +60,7 @@ export default defineComponent({
     const isSendingRequest = ref(false)
     const recipes = ref<any>([])
     const showModal = ref(true)
+    const selectedRecipe = ref<number>()
 
     const handleProgress = (state: any) => {
       isSendingRequest.value = state
@@ -74,15 +79,26 @@ export default defineComponent({
       showModal.value = false
     }
 
+    const closeModalRecipe = () => {
+      selectedRecipe.value = undefined
+    }
+
+    const handleSelectedRecipe = (id: number) => {
+      selectedRecipe.value = id
+    }
+
     return {
       handleProgress,
       handleSuccess,
       openModal,
       closeModal,
+      handleSelectedRecipe,
+      closeModalRecipe,
       isSendingRequest,
       recipes,
       showModal,
-      searchOutline
+      searchOutline,
+      selectedRecipe
     }
   }
 })

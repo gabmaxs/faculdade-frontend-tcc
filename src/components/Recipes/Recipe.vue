@@ -4,6 +4,8 @@
             <ion-card-header>
                 <img :src="recipe.image">
                 <ion-card-title>{{ recipe.name }}</ion-card-title>
+                <ion-card-subtitle>Tempo de preparo: {{ recipe.cooking_time }} min</ion-card-subtitle>
+                <ion-card-subtitle>Serve até: {{ recipe.number_of_servings }} pessoa(s)</ion-card-subtitle>
                 <ion-card-subtitle>{{ categoryName }}</ion-card-subtitle>
             </ion-card-header>
             <ion-card-content>
