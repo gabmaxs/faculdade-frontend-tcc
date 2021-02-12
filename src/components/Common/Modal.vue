@@ -11,7 +11,7 @@
                     <ion-toolbar>
                         <ion-title>{{ title }}</ion-title>
                         <ion-buttons slot="end">
-                            <ion-button @click="dismissModal">Cancelar</ion-button>
+                            <ion-button @click="dismissModal">{{ textClose || 'Cancelar' }}</ion-button>
                         </ion-buttons>
                     </ion-toolbar>
                 </ion-header>
@@ -20,7 +20,7 @@
                         <ion-toolbar>
                             <ion-title size="large">{{ title }}</ion-title>
                             <ion-buttons slot="end">
-                                <ion-button @click="dismissModal">Cancelar</ion-button>
+                                <ion-button @click="dismissModal">{{ textClose || 'Cancelar' }}</ion-button>
                             </ion-buttons>
                         </ion-toolbar>
                     </ion-header>
@@ -44,7 +44,7 @@ import { ProgressBar } from "@/components/Common"
 export default defineComponent({
     name: "Modal",
     components: { IonModal, IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonButtons, ProgressBar },
-    props: ["title", "is-progress"],
+    props: ["title", "is-progress", "text-close"],
     emit: [],
     setup(props,context) {
         const handleDismiss = () => context.emit("onDismiss", true)
