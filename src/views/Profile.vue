@@ -36,7 +36,7 @@ import { useStore } from "vuex"
 import { ProgressBar } from "@/components/Common"
 import { ProfileCard } from "@/components/Profile"
 
-export default  defineComponent({
+export default defineComponent({
   name: 'Profile',
   components: { 
     IonHeader, 

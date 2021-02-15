@@ -13,11 +13,9 @@
         </ion-toolbar>
       </ion-header>
     
-      <div class="container">
+      <div>
         <AuthCard v-if="!userIsLogged" @progress="changeProgress" @onAuthentication="handleAuthentication"/>
-        <div v-if="userIsLogged">
-          <h1>Cadastrar nova receita</h1>
-        </div>
+        <RecipeForm v-if="userIsLogged" />
       </div>
     </ion-content>
   </ion-page>
@@ -27,12 +25,13 @@
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
 import { AuthCard } from '@/components/Auth'
 import { ProgressBar } from "@/components/Common"
-import { ref } from 'vue';
+import { RecipeForm } from "@/components/RecipeForm"
+import { ref, defineComponent } from 'vue';
 import { useStore } from 'vuex';
 
-export default  {
+export default defineComponent({
   name: 'RecipeRegister',
-  components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, AuthCard, ProgressBar },
+  components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, AuthCard, ProgressBar, RecipeForm },
   setup() {
     const store = useStore()
     const userIsLogged = ref(store.getters.isTheUserLoggedIn)
@@ -51,16 +50,5 @@ export default  {
       isProgress
     }
   }
-}
+})
 </script>
-
-<style scoped>
-.container {
-  text-align: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-}
-</style>
