@@ -11,7 +11,7 @@
         <ion-item>
             <ion-label position="floating">Tipo de receita</ion-label>
             <ion-select cancel-text="Cancelar" v-model="form.category_id" interface="action-sheet">
-                <ion-select-option value="1">Categorias</ion-select-option>
+                <ion-select-option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</ion-select-option>
             </ion-select>
         </ion-item>
         <ion-item>
@@ -45,6 +45,7 @@
 </template>
 
 <script lang="ts">
+import { categoryService } from '@/services';
 import { IonItem, IonLabel, IonInput, IonSelect, IonSelectOption, IonTextarea, IonRow, IonCol, IonButton } from '@ionic/vue';
 import { defineComponent, ref } from 'vue'
 
@@ -62,6 +63,8 @@ export default defineComponent({
             list_of_ingredients: ""
         })
 
+        const categories = ref([])
+
         const handleImage = (event) => {
             const file = event.target.files[0]
             console.log(file)
@@ -72,10 +75,23 @@ export default defineComponent({
             console.log(form.value)
         }
 
+        const getCategories = async () => {
+            try {
+                const {data} = await categoryService.getCategories()
+                categories.value = data.data
+            }
+            catch(e) {
+                console.log(e.reponse)
+            }
+        }
+
+        getCategories()
+
         return {
             handleImage,
             sendForm,
-            form
+            form,
+            categories
         }
     }
 })
