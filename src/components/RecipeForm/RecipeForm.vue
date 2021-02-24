@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <ion-item-group>
         <ion-item>
               <ion-label position="floating">Nome da receita</ion-label>
               <ion-input v-model="form.name" type="text"></ion-input>
@@ -28,10 +28,17 @@
             <ion-label position="floating">Tempo de preparo</ion-label>
             <ion-input type="number" v-model="form.cooking_time" placeholder="Tempo em minutos"></ion-input>
         </ion-item>
-        <ion-item>
-            <ion-label position="floating">Ingredientes</ion-label>
-            <ion-textarea rows="10" v-model="form.list_of_ingredients" placeholder="Separe cada passo com um Enter"></ion-textarea>
-        </ion-item>
+        <ion-item-divider>
+            <ion-label>Ingredientes</ion-label>
+        </ion-item-divider>
+        <IngredientSearchInput v-for="(item, key) in (arrayIngredients)" 
+            v-bind:key="key" 
+            @action="(action) => handleAction(action, key)"  
+            v-model="item.value" 
+            v-model:quantity="item.quantity"
+            v-model:measure="item.measure"
+            has-config
+        />
         <ion-item>
             <ion-label position="floating">Modo de preparo</ion-label>
             <ion-textarea rows="10" v-model="form.how_to_cook" placeholder="Separe cada passo com um Enter"></ion-textarea>
@@ -41,18 +48,31 @@
             <ion-button @click="sendForm" expand="block">Salvar</ion-button>
           </ion-col>
         </ion-row>
-    </div>
+    </ion-item-group>
 </template>
 
 <script lang="ts">
 import { categoryService } from '@/services';
-import { IonItem, IonLabel, IonInput, IonSelect, IonSelectOption, IonTextarea, IonRow, IonCol, IonButton } from '@ionic/vue';
+import IngredientSearchInput from "@/components/IngredientSearch/IngredientSearchInput.vue"
+import { 
+    IonItem, IonLabel, IonInput, IonSelect, IonSelectOption, IonTextarea,
+    IonRow, IonCol, IonButton, IonItemDivider, IonItemGroup 
+} from '@ionic/vue';
 import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
     name: "RecipeForm",
-    components: { IonItem, IonLabel, IonInput, IonSelect, IonTextarea, IonSelectOption, IonRow, IonCol, IonButton },
+    components: { 
+        IonItem, IonLabel, IonInput, IonSelect, IonTextarea, IonSelectOption,
+        IonRow, IonCol, IonButton, IonItemDivider, IonItemGroup, IngredientSearchInput
+    },
     setup() {
+        const arrayIngredients = ref([{value:"", quantity: null, measure: ''}])
+        const handleAction = (value: string, key: any) => {
+            if(value == "add")  arrayIngredients.value.push({value:"", quantity: null, measure: ''})
+            if(value == "delete") arrayIngredients.value.splice(key, 1)
+        }
+        
         const form = ref({
             name: "",
             category_id: "",
@@ -88,10 +108,12 @@ export default defineComponent({
         getCategories()
 
         return {
+            handleAction,
             handleImage,
             sendForm,
             form,
-            categories
+            categories,
+            arrayIngredients
         }
     }
 })
