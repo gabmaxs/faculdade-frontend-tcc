@@ -16,7 +16,7 @@
                     <ion-col size="6">
                         <ion-item>
                             <ion-label position="floating">Medida</ion-label>
-                            <ion-select interface="action-sheet" cancel-text="Cancelar" @ionInput="$emit('update:measure', $event.target.value)" :value="measure">
+                            <ion-select interface="action-sheet" cancel-text="Cancelar" @ionChange="$emit('update:measure', $event.target.value)" :value="measure">
                               <ion-select-option value="unidade">Unidade</ion-select-option>
                               <ion-select-option value="gramas">Gramas</ion-select-option>
                               <ion-select-option value="xícara">Xícara</ion-select-option>
