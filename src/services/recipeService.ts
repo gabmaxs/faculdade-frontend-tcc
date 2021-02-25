@@ -20,32 +20,44 @@ function getRecipe(recipeId: number) {
   })
 }
 
-function sendRecipe(recipe: any, token: string) {
-  const formData = new FormData()
-  formData.append("image",recipe.image)
-  formData.append("recipe",JSON.stringify({
-    name: recipe.name,
-    category_id: recipe.category_id,
-    number_of_servings: recipe.number_of_servings,
-    cooking_time: recipe.cooking_time,
-    how_to_cook: recipe.how_to_cook,
-    list_of_ingredients: recipe.list_of_ingredients
-  }))
-  console.log(formData)
 
-  return axios.post(`${API_URL}/recipe`, formData, {
+async function sendRecipeImage({id},{image}, token: string) {
+  console.log("salvando imagem...")
+  const formData = new FormData()
+  formData.append("image", image)
+
+  return axios.post(`${API_URL}/recipe/${id}/image`, formData, {
     headers: {
       "Accept": "application/json",
-      "Authorization": `Bearer ${token}`,
-      "Content-Type": 'application/json'
+      "Authorization": `Bearer ${token}`
     }
   })
+}
+
+function sendRecipe(recipe: any, token) {
+  return axios.post(`${API_URL}/recipe`, JSON.stringify(recipe), {
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    }
+  })
+}
+
+async function saveRecipe(recipe: any, token: string) {
+  const response = await sendRecipe(recipe, token)
+
+  console.log("obj", {recipe, ...response.data.data})
+  
+  if(response.status === 201) await sendRecipeImage(response.data.data, recipe, token)
+
+  return response
 }
 
 const recipeService = {
   searchRecipes,
   getRecipe,
-  sendRecipe
+  saveRecipe
 }
 
 export default recipeService

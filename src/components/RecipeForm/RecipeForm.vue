@@ -41,7 +41,7 @@
         />
         <ion-item>
             <ion-label position="floating">Modo de preparo</ion-label>
-            <ion-textarea rows="10" v-model="form.how_to_cook" placeholder="Separe cada passo com um Enter"></ion-textarea>
+            <ion-textarea rows="10" v-model="how_to_cook" placeholder="Separe cada passo com um Enter"></ion-textarea>
         </ion-item>
         <ion-row>
           <ion-col size="8" offset="2">
@@ -72,6 +72,8 @@ export default defineComponent({
         const handleAction = (value: string, key: any) => {
             if(value == "add")  arrayIngredients.value.push({value:"", quantity: null, measure: ''})
             if(value == "delete") arrayIngredients.value.splice(key, 1)
+            
+            console.log(arrayIngredients.value)
         }
         
         const form = ref({
@@ -80,9 +82,11 @@ export default defineComponent({
             image: "",
             number_of_servings: "",
             cooking_time: "",
-            how_to_cook: "",
-            list_of_ingredients: ""
+            how_to_cook: [""],
+            list_of_ingredients: [{}]
         })
+
+        const how_to_cook = ref("")
 
         const categories = ref([])
 
@@ -92,13 +96,21 @@ export default defineComponent({
             form.value.image = file
         }
 
+        const handleIngredientList = (item) => {
+            item["name"] = item["value"];
+            delete item["value"];
+            return item
+        }
+
         const store = useStore()
         const sendForm = async () => {
             console.log(form.value)
+            form.value.list_of_ingredients = arrayIngredients.value.map(handleIngredientList)
+            form.value.how_to_cook = how_to_cook.value.split("\n")
 
             try {
                 const token = store.getters.getToken
-                const response = await recipeService.sendRecipe(form.value, token)
+                const response = await recipeService.saveRecipe(form.value, token)
                 console.log(response.data)
             }
             catch(e) {
@@ -125,7 +137,8 @@ export default defineComponent({
             sendForm,
             form,
             categories,
-            arrayIngredients
+            arrayIngredients,
+            how_to_cook
         }
     }
 })
