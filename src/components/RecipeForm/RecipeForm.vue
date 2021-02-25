@@ -52,13 +52,14 @@
 </template>
 
 <script lang="ts">
-import { categoryService } from '@/services';
+import { categoryService, recipeService } from '@/services';
 import IngredientSearchInput from "@/components/IngredientSearch/IngredientSearchInput.vue"
 import { 
     IonItem, IonLabel, IonInput, IonSelect, IonSelectOption, IonTextarea,
     IonRow, IonCol, IonButton, IonItemDivider, IonItemGroup 
 } from '@ionic/vue';
 import { defineComponent, ref } from 'vue'
+import { useStore } from 'vuex';
 
 export default defineComponent({
     name: "RecipeForm",
@@ -91,8 +92,19 @@ export default defineComponent({
             form.value.image = file
         }
 
-        const sendForm = () => {
+        const store = useStore()
+        const sendForm = async () => {
             console.log(form.value)
+
+            try {
+                const token = store.getters.getToken
+                const response = await recipeService.sendRecipe(form.value, token)
+                console.log(response.data)
+            }
+            catch(e) {
+                console.log(e) 
+                console.log(e.response)
+            }
         }
 
         const getCategories = async () => {

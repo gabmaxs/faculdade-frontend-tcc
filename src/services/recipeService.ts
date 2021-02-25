@@ -20,9 +20,32 @@ function getRecipe(recipeId: number) {
   })
 }
 
+function sendRecipe(recipe: any, token: string) {
+  const formData = new FormData()
+  formData.append("image",recipe.image)
+  formData.append("recipe",JSON.stringify({
+    name: recipe.name,
+    category_id: recipe.category_id,
+    number_of_servings: recipe.number_of_servings,
+    cooking_time: recipe.cooking_time,
+    how_to_cook: recipe.how_to_cook,
+    list_of_ingredients: recipe.list_of_ingredients
+  }))
+  console.log(formData)
+
+  return axios.post(`${API_URL}/recipe`, formData, {
+    headers: {
+      "Accept": "application/json",
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": 'application/json'
+    }
+  })
+}
+
 const recipeService = {
   searchRecipes,
-  getRecipe
+  getRecipe,
+  sendRecipe
 }
 
 export default recipeService
