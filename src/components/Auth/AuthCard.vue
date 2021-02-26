@@ -19,7 +19,7 @@ import { IonCard, IonCardHeader, IonCardContent, IonCardTitle } from '@ionic/vue
 import { defineComponent, ref } from 'vue'
 import AuthCardLogin from "./AuthCardLogin.vue"
 import AuthCardRegister from "./AuthCardRegister.vue"
-import { Message } from "@/components/Message"
+import { Message } from "@/components/Common"
 
 export default defineComponent({
     name: 'AuthCard',

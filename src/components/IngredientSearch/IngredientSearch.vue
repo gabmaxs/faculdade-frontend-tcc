@@ -16,7 +16,7 @@ import IngredientSearchInput from "./IngredientSearchInput.vue"
 import IngredientSearchSubmit from "./IngredientSearchSubmit.vue"
 import { defineComponent, ref } from 'vue'
 import { recipeService } from "@/services"
-import { Message } from "@/components/Message"
+import { Message } from "@/components/Common"
 
 export default defineComponent({
   name: 'IngredientSearch',
