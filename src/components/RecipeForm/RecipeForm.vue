@@ -67,15 +67,9 @@ export default defineComponent({
         IonItem, IonLabel, IonInput, IonSelect, IonTextarea, IonSelectOption,
         IonRow, IonCol, IonButton, IonItemDivider, IonItemGroup, IngredientSearchInput
     },
-    setup() {
+    emits: ["end", "loading"],
+    setup(_, context) {
         const arrayIngredients = ref([{value:"", quantity: null, measure: ''}])
-        const handleAction = (value: string, key: any) => {
-            if(value == "add")  arrayIngredients.value.push({value:"", quantity: null, measure: ''})
-            if(value == "delete") arrayIngredients.value.splice(key, 1)
-            
-            console.log(arrayIngredients.value)
-        }
-        
         const form = ref({
             name: "",
             category_id: "",
@@ -85,14 +79,18 @@ export default defineComponent({
             how_to_cook: [""],
             list_of_ingredients: [{}]
         })
-
         const how_to_cook = ref("")
-
         const categories = ref([])
+
+        const handleAction = (value: string, key: any) => {
+            if(value == "add")  arrayIngredients.value.push({value:"", quantity: null, measure: ''})
+            if(value == "delete") arrayIngredients.value.splice(key, 1)
+            
+            console.log(arrayIngredients.value)
+        }
 
         const handleImage = (event) => {
             const file = event.target.files[0]
-            console.log(file)
             form.value.image = file
         }
 
@@ -102,20 +100,58 @@ export default defineComponent({
             return item
         }
 
+        const clearForm = () => {
+            form.value = {
+                name: "",
+                category_id: "",
+                image: "",
+                number_of_servings: "",
+                cooking_time: "",
+                how_to_cook: [""],
+                list_of_ingredients: [{}]
+            }
+            arrayIngredients.value = [{value:"", quantity: null, measure: ''}]
+            how_to_cook.value = ""
+        }
+
+        const handleSuccess = ({message}: {message: string}) => {
+            const data = {
+                returnMessage: message,
+                responseIsSuccessful: true,
+                showMessage: true
+            }
+            clearForm()
+            context.emit("end", data)
+            context.emit("loading", false)
+        }
+
+        const handleError = ({message}: {message: string}) => {
+            const data = {
+                returnMessage: message,
+                responseIsSuccessful: true,
+                showMessage: true
+            }
+            context.emit("end", data)
+            context.emit("loading", false)
+        }
+
         const store = useStore()
         const sendForm = async () => {
-            console.log(form.value)
+            context.emit("loading", true)
+            
             form.value.list_of_ingredients = arrayIngredients.value.map(handleIngredientList)
             form.value.how_to_cook = how_to_cook.value.split("\n")
 
             try {
                 const token = store.getters.getToken
                 const response = await recipeService.saveRecipe(form.value, token)
-                console.log(response.data)
+                console.log(response)
+                handleSuccess(response.data)
             }
             catch(e) {
                 console.log(e) 
                 console.log(e.response)
+                handleError(e.response)
             }
         }
 
