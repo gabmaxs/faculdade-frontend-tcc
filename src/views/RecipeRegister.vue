@@ -24,9 +24,9 @@
         <AuthCard 
           v-if="!userIsLogged" 
           @progress="changeProgress" 
-          @onAuthentication="handleAuthentication"
+          @end="handleEndAuth"
         />
-        <RecipeForm v-if="userIsLogged" @loading="changeProgress" @end="handleEnd" />
+        <RecipeForm v-if="userIsLogged" @loading="changeProgress" @end="handleEndForm" />
       </div>
     </ion-content>
   </ion-page>
@@ -37,7 +37,7 @@ import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue
 import { AuthCard } from '@/components/Auth'
 import { ProgressBar, Message } from "@/components/Common"
 import { RecipeForm } from "@/components/RecipeForm"
-import { ref, defineComponent } from 'vue';
+import { ref, defineComponent, computed } from 'vue';
 import { useStore } from 'vuex';
 
 export default defineComponent({
@@ -48,24 +48,24 @@ export default defineComponent({
   },
   setup() {
     const store = useStore()
-    const userIsLogged = ref(store.getters.isTheUserLoggedIn)
+    const userIsLogged = computed(() => store.getters.isTheUserLoggedIn)
     const isProgress = ref(false)
     const configMessage = ref({
       showMessage: false,
       responseIsSuccessful: false, 
       returnMessage: ""
     })
-    const handleAuthentication = () => {
-      userIsLogged.value = true
+    const handleEndAuth = (config) => {
+      configMessage.value = config
     }
 
     const changeProgress = (value: boolean) => isProgress.value = value
 
-    const handleEnd = (config) => configMessage.value = config
+    const handleEndForm = (config) => configMessage.value = config
 
     return {
-      handleEnd,
-      handleAuthentication,
+      handleEndForm,
+      handleEndAuth,
       changeProgress,
       userIsLogged,
       isProgress,
