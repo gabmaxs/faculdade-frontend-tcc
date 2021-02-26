@@ -11,7 +11,7 @@ export default defineComponent({
         "message"
     ],
     emits: [
-        "onDismiss"
+        "dismiss"
     ],
     setup(props,context) {
         const openToast = async () => {
@@ -23,7 +23,7 @@ export default defineComponent({
             await toast.present()
 
             await toast.onDidDismiss()
-            context.emit("onDismiss", true)
+            context.emit("dismiss", true)
         }
 
         onMounted(() => openToast())
