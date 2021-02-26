@@ -3,13 +3,13 @@
         <Toast 
           :message="message" 
           v-if="isSuccess" 
-          @onDismiss="dismiss"
+          @dismiss="dismiss"
         />
 
         <Alert 
           :message="message" 
           v-if="!isSuccess" 
-          @onDismiss="dismiss"
+          @dismiss="dismiss"
         />
     </div>
 </template>
@@ -23,7 +23,7 @@ export default defineComponent({
     components: {
         Toast, Alert
     },
-    emits: ["onDismiss"],
+    emits: ["dismiss"],
     props: {
         isSuccess: {
             type: Boolean,
@@ -40,7 +40,7 @@ export default defineComponent({
     },
     setup(_, context) {
         const dismiss = () => {
-            context.emit("onDismiss", true)
+            context.emit("dismiss", true)
         }
 
         return {
