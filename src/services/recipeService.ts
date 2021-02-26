@@ -47,7 +47,7 @@ function sendRecipe(recipe: any, token) {
 async function saveRecipe(recipe: any, token: string) {
   const response = await sendRecipe(recipe, token)
 
-  console.log("obj", {recipe, ...response.data.data})
+  console.log("response", response)
   
   if(response.status === 201) await sendRecipeImage(response.data.data, recipe, token)
 
