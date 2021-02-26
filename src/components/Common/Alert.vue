@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { IonAlert } from '@ionic/vue';
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
     name: "Alert",
