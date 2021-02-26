@@ -5,11 +5,17 @@
         </ion-card-header>
 
         <ion-card-content>
-            <AuthCardLogin v-if="isLoginCard" @wantChange="isLoginCard = false" @wantLogin="login" />
-            <AuthCardRegister v-if="!isLoginCard" @wantChange="isLoginCard = true" @wantRegister="register" />
+            <AuthCardLogin 
+                v-if="isLoginCard" 
+                @wantChange="isLoginCard = false" 
+                @wantLogin="login" 
+            />
+            <AuthCardRegister 
+                v-if="!isLoginCard" 
+                @wantChange="isLoginCard = true" 
+                @wantRegister="register" 
+            />
         </ion-card-content>
-
-        <Message @onDismiss="showMessage = false" :show="showMessage" :isSuccess="responseIsSuccessful" :message="returnMessage" />
     </ion-card> 
 </template>
 
@@ -19,32 +25,33 @@ import { IonCard, IonCardHeader, IonCardContent, IonCardTitle } from '@ionic/vue
 import { defineComponent, ref } from 'vue'
 import AuthCardLogin from "./AuthCardLogin.vue"
 import AuthCardRegister from "./AuthCardRegister.vue"
-import { Message } from "@/components/Common"
 
 export default defineComponent({
     name: 'AuthCard',
     components: { 
-        IonCard, IonCardHeader, IonCardContent, IonCardTitle, AuthCardLogin, AuthCardRegister, Message
+        IonCard, IonCardHeader, IonCardContent, IonCardTitle, 
+        AuthCardLogin, AuthCardRegister
     },
-    emits: ["onAuthentication", "progress"],
+    emits: ["end", "progress"],
     setup(_, context) {
         const isLoginCard = ref(true)
 
-        const responseIsSuccessful = ref(false)
-        const returnMessage = ref("")
-        const showMessage = ref(false)
-
         const handleUserLogged = ({message}: {message: string}) => {
-            returnMessage.value = message
-            responseIsSuccessful.value = true
-            showMessage.value = true
-            context.emit("onAuthentication", true)
+            const data = {
+                returnMessage: message,
+                responseIsSuccessful: true,
+                showMessage: true
+            }
+            context.emit("end", data)
         }
 
         const handleError = ({message}: {message: string}) => {
-            returnMessage.value = message
-            responseIsSuccessful.value = false
-            showMessage.value = true
+            const data = {
+                returnMessage: message,
+                responseIsSuccessful: false,
+                showMessage: true
+            }
+            context.emit("end", data)
         }
 
         const login = async (user: any) => {
@@ -74,10 +81,7 @@ export default defineComponent({
         return {
             login,
             register,
-            isLoginCard,
-            responseIsSuccessful,
-            returnMessage,
-            showMessage
+            isLoginCard
         }
     }
 })

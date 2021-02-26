@@ -18,9 +18,20 @@
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
-      
+
+      <Message 
+          @dismiss="configMessage.showMessage = false" 
+          :show="configMessage.showMessage" 
+          :isSuccess="configMessage.responseIsSuccessful" 
+          :message="configMessage.returnMessage" 
+      />
+    
       <div class="container">
-        <AuthCard v-if="!userIsLogged" @progress="changeProgress" @onAuthentication="handleAuthentication"/>
+        <AuthCard 
+          v-if="!userIsLogged" 
+          @progress="changeProgress" 
+          @end="handleEnd"
+        />
         <ProfileCard v-if="userIsLogged" />
       </div>
     </ion-content>
@@ -30,10 +41,10 @@
 <script lang="ts">
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonButton, IonIcon } from '@ionic/vue';
 import { logOutOutline } from 'ionicons/icons';
-import { defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import { AuthCard } from '@/components/Auth'
 import { useStore } from "vuex"
-import { ProgressBar } from "@/components/Common"
+import { ProgressBar, Message } from "@/components/Common"
 import { ProfileCard } from "@/components/Profile"
 
 export default defineComponent({
@@ -49,31 +60,38 @@ export default defineComponent({
     IonButton, 
     IonIcon,
     ProgressBar,
-    ProfileCard
+    ProfileCard,
+    Message
   },
   setup() {
     const store = useStore()
-    const userIsLogged = ref(store.getters.isTheUserLoggedIn)
+    const userIsLogged = computed(() => store.getters.isTheUserLoggedIn)
     const isProgress = ref(false)
+    const configMessage = ref({
+        responseIsSuccessful: false,
+        returnMessage: "",
+        showMessage: false
+    })
 
-    const handleAuthentication = () => {
-      userIsLogged.value = true
+
+    const handleEnd = (config) => {
+      configMessage.value = config
     }
 
     const logout = () => {
       store.commit("removeUser")
-      userIsLogged.value = false
     }
 
     const changeProgress = (value) => isProgress.value = value
 
     return {
-      handleAuthentication,
+      handleEnd,
       logout,
       changeProgress,
       userIsLogged,
       logOutOutline,
-      isProgress
+      isProgress,
+      configMessage
     }
   }
 })

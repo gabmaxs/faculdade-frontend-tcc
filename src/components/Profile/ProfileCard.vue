@@ -47,7 +47,6 @@ export default  defineComponent({
         const handleSuccess = ({data}) => {
             data.culinary_level = data.culinary_level.toString()
             user.value = data
-            console.log(user.value)
         }
 
         const onInit = async () => {
