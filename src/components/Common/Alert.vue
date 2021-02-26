@@ -28,9 +28,9 @@ export default defineComponent({
             default: "Aviso"
         }
     },
-    emit: ["onDismiss"],
+    emit: ["dismiss"],
     setup(props,context) {
-        const handleDismiss = () => context.emit("onDismiss", true)
+        const handleDismiss = () => context.emit("dismiss", true)
         const buttons = ['Ok']
 
         return { buttons, handleDismiss }
