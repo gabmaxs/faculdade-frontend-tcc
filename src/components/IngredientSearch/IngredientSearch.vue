@@ -1,5 +1,6 @@
 <template>
     <div>
+        <IngredientSearchOptions />
         <IngredientSearchInput v-for="(item, key) in (arrayIngredients)" 
           v-bind:key="key" 
           @action="(action) => handleAction(action, key)"  
@@ -14,13 +15,14 @@
 <script lang="ts">
 import IngredientSearchInput from "./IngredientSearchInput.vue"
 import IngredientSearchSubmit from "./IngredientSearchSubmit.vue"
+import IngredientSearchOptions from "./IngredientSearchOptions.vue"
 import { defineComponent, ref } from 'vue'
 import { recipeService } from "@/services"
 import { Message } from "@/components/Common"
 
 export default defineComponent({
   name: 'IngredientSearch',
-  components: { IngredientSearchInput, IngredientSearchSubmit, Message },
+  components: { IngredientSearchInput, IngredientSearchSubmit, IngredientSearchOptions, Message },
   emits: [
     "progress", "success"
   ],
