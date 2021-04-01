@@ -20,21 +20,7 @@ function getRecipe(recipeId: number) {
   })
 }
 
-
-async function sendRecipeImage({id},{image}, token: string) {
-  console.log("salvando imagem...")
-  const formData = new FormData()
-  formData.append("image", image)
-
-  return axios.post(`${API_URL}/recipe/${id}/image`, formData, {
-    headers: {
-      "Accept": "application/json",
-      "Authorization": `Bearer ${token}`
-    }
-  })
-}
-
-function sendRecipe(recipe: any, token) {
+function saveRecipe(recipe: any, token) {
   return axios.post(`${API_URL}/recipe`, JSON.stringify(recipe), {
     headers: {
       "Accept": "application/json",
@@ -42,16 +28,6 @@ function sendRecipe(recipe: any, token) {
       "Authorization": `Bearer ${token}`
     }
   })
-}
-
-async function saveRecipe(recipe: any, token: string) {
-  const response = await sendRecipe(recipe, token)
-
-  console.log("response", response)
-  
-  if(response.status === 201) await sendRecipeImage(response.data.data, recipe, token)
-
-  return response
 }
 
 const recipeService = {

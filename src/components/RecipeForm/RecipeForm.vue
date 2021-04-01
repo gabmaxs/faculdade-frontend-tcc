@@ -5,9 +5,9 @@
               <ion-input v-model="form.name" type="text"></ion-input>
         </ion-item>
         <ion-item>
-              <input v-on:change="handleImage" type="file" id="file" class="fileInput" />
               <label for="file">Selecionar imagem</label>
         </ion-item>
+        <FileUpload @fileUploadComplete="handleFileUpload" server="recipe/image" />
         <ion-item>
             <ion-label position="floating">Tipo de receita</ion-label>
             <ion-select cancel-text="Cancelar" v-model="form.category_id" interface="action-sheet">
@@ -60,12 +60,14 @@ import {
 } from '@ionic/vue';
 import { defineComponent, ref } from 'vue'
 import { useStore } from 'vuex';
+import { FileUpload } from '@/components/Common'
 
 export default defineComponent({
     name: "RecipeForm",
     components: { 
         IonItem, IonLabel, IonInput, IonSelect, IonTextarea, IonSelectOption,
-        IonRow, IonCol, IonButton, IonItemDivider, IonItemGroup, IngredientSearchInput
+        IonRow, IonCol, IonButton, IonItemDivider, IonItemGroup, IngredientSearchInput,
+        FileUpload
     },
     emits: ["end", "loading"],
     setup(_, context) {
@@ -82,17 +84,14 @@ export default defineComponent({
         const how_to_cook = ref("")
         const categories = ref([])
 
-        const handleAction = (value: string, key: any) => {
+        const handleAction = (value, key) => {
             if(value == "add")  arrayIngredients.value.push({value:"", quantity: null, measure: ''})
             if(value == "delete") arrayIngredients.value.splice(key, 1)
             
             console.log(arrayIngredients.value)
         }
 
-        const handleImage = (event) => {
-            const file = event.target.files[0]
-            form.value.image = file
-        }
+        const handleFileUpload = (value) => form.value.image = value
 
         const handleIngredientList = (item) => {
             item["name"] = item["value"];
@@ -114,7 +113,7 @@ export default defineComponent({
             how_to_cook.value = ""
         }
 
-        const handleSuccess = ({message}: {message: string}) => {
+        const handleSuccess = ({message}) => {
             const data = {
                 returnMessage: message,
                 responseIsSuccessful: true,
@@ -125,7 +124,7 @@ export default defineComponent({
             context.emit("loading", false)
         }
 
-        const handleError = ({message}: {message: string}) => {
+        const handleError = ({message}) => {
             const data = {
                 returnMessage: message,
                 responseIsSuccessful: true,
@@ -145,7 +144,6 @@ export default defineComponent({
             try {
                 const token = store.getters.getToken
                 const response = await recipeService.saveRecipe(form.value, token)
-                console.log(response)
                 handleSuccess(response.data)
             }
             catch(e) {
@@ -168,8 +166,8 @@ export default defineComponent({
         getCategories()
 
         return {
+            handleFileUpload,
             handleAction,
-            handleImage,
             sendForm,
             form,
             categories,
