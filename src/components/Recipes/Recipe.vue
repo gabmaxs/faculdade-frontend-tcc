@@ -1,8 +1,11 @@
 <template>
     <div>
         <div v-if="recipe">
+            <div class="full-image">
+                <img v-if="recipe.image" :src="recipe.image">
+                <img v-else src="../../../public/assets/image.jpeg">
+            </div>
             <ion-card-header>
-                <img :src="recipe.image">
                 <ion-card-title>{{ recipe.name }}</ion-card-title>
                 <ion-card-subtitle>Tempo de preparo: {{ recipe.cooking_time }} min</ion-card-subtitle>
                 <ion-card-subtitle>Serve até: {{ recipe.number_of_servings }} pessoa(s)</ion-card-subtitle>
@@ -84,3 +87,10 @@ export default defineComponent({
     }
 })
 </script>
+
+<style scoped>
+.full-image img {
+    width: 100%;
+    height: auto;
+}
+</style>
