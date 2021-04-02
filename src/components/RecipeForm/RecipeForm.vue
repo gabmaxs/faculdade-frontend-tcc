@@ -31,9 +31,9 @@
         <ion-item-divider>
             <ion-label>Ingredientes</ion-label>
         </ion-item-divider>
-        <IngredientSearchInput v-for="(item, key) in (arrayIngredients)" 
-            v-bind:key="key" 
-            @action="(action) => handleAction(action, key)"  
+        <IngredientSearchInput v-for="item in (arrayIngredients)" 
+          v-bind:key="item.uuid" 
+            @action="(action) => handleAction(action, item.uuid)"  
             v-model="item.value" 
             v-model:quantity="item.quantity"
             v-model:measure="item.measure"
@@ -61,6 +61,7 @@ import {
 import { defineComponent, ref } from 'vue'
 import { useStore } from 'vuex';
 import { FileUpload } from '@/components/Common'
+import { v4 as uuidv4 } from 'uuid'
 
 export default defineComponent({
     name: "RecipeForm",
@@ -71,7 +72,7 @@ export default defineComponent({
     },
     emits: ["end", "loading"],
     setup(_, context) {
-        const arrayIngredients = ref([{value:"", quantity: null, measure: ''}])
+        const arrayIngredients = ref([{value:"", quantity: null, measure: '', uuid: uuidv4()}])
         const form = ref({
             name: "",
             category_id: "",
@@ -85,10 +86,8 @@ export default defineComponent({
         const categories = ref([])
 
         const handleAction = (value, key) => {
-            if(value == "add")  arrayIngredients.value.push({value:"", quantity: null, measure: ''})
-            if(value == "delete") arrayIngredients.value.splice(key, 1)
-            
-            console.log(arrayIngredients.value)
+            if(value == "add")  arrayIngredients.value.push({value:"", quantity: null, measure: '', uuid: uuidv4()})
+            if(value == "delete") arrayIngredients.value = arrayIngredients.value.filter(item => item.uuid != key)
         }
 
         const handleFileUpload = (value) => form.value.image = value
@@ -109,7 +108,7 @@ export default defineComponent({
                 how_to_cook: [""],
                 list_of_ingredients: [{}]
             }
-            arrayIngredients.value = [{value:"", quantity: null, measure: ''}]
+            arrayIngredients.value = [{value:"", quantity: null, measure: '', uuid: uuidv4()}]
             how_to_cook.value = ""
         }
 

@@ -1,9 +1,9 @@
 <template>
     <div>
         <IngredientSearchOptions />
-        <IngredientSearchInput v-for="(item, key) in (arrayIngredients)" 
-          v-bind:key="key" 
-          @action="(action) => handleAction(action, key)"  
+        <IngredientSearchInput v-for="item in (arrayIngredients)" 
+          v-bind:key="item.uuid" 
+          @action="(action) => handleAction(action, item.uuid)"  
           v-model="item.value" 
         />
         <IngredientSearchSubmit @click="handleSubmit" />
@@ -19,6 +19,7 @@ import IngredientSearchOptions from "./IngredientSearchOptions.vue"
 import { defineComponent, ref } from 'vue'
 import { recipeService } from "@/services"
 import { Message } from "@/components/Common"
+import { v4 as uuidv4 } from 'uuid'
 
 export default defineComponent({
   name: 'IngredientSearch',
@@ -27,15 +28,15 @@ export default defineComponent({
     "progress", "success"
   ],
   setup(_, context) { 
-    const arrayIngredients = ref([{value:""}])
+    const arrayIngredients = ref([{value:"", uuid: uuidv4()}])
 
     const responseIsSuccessful = ref(false)
     const returnMessage = ref("")
     const showMessage = ref(false)
 
-    const handleAction = (value: string, key: any) => {
-      if(value == "add")  arrayIngredients.value.push({value:""})
-      if(value == "delete") arrayIngredients.value.splice(key, 1)
+    const handleAction = (value: string, key: string) => {
+      if(value == "add")  arrayIngredients.value.push({value:"", uuid: uuidv4()})
+      if(value == "delete") arrayIngredients.value = arrayIngredients.value.filter(item => item.uuid != key)
     }
 
     const handleSuccess = ({data, message}: {data: Array<any>; message: string}) => {
