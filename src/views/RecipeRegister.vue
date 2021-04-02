@@ -61,7 +61,9 @@ export default defineComponent({
 
     const changeProgress = (value: boolean) => isProgress.value = value
 
-    const handleEndForm = (config) => configMessage.value = config
+    const handleEndForm = (config) => {
+      configMessage.value = config
+    }
 
     return {
       handleEndForm,

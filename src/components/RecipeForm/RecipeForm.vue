@@ -127,7 +127,7 @@ export default defineComponent({
         const handleError = ({message}) => {
             const data = {
                 returnMessage: message,
-                responseIsSuccessful: true,
+                responseIsSuccessful: false,
                 showMessage: true
             }
             context.emit("end", data)
