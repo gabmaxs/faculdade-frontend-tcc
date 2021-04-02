@@ -41,7 +41,7 @@
         />
         <ion-item>
             <ion-label position="floating">Modo de preparo</ion-label>
-            <ion-textarea rows="10" v-model="how_to_cook" placeholder="Separe cada passo com um Enter"></ion-textarea>
+            <ion-textarea rows="10" v-model="form.how_to_cook_text" placeholder="Separe cada passo com um Enter"></ion-textarea>
         </ion-item>
         <ion-row>
           <ion-col size="8" offset="2">
@@ -58,7 +58,7 @@ import {
     IonItem, IonLabel, IonInput, IonSelect, IonSelectOption, IonTextarea,
     IonRow, IonCol, IonButton, IonItemDivider, IonItemGroup 
 } from '@ionic/vue';
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 import { useStore } from 'vuex';
 import { FileUpload } from '@/components/Common'
 import { v4 as uuidv4 } from 'uuid'
@@ -73,16 +73,20 @@ export default defineComponent({
     emits: ["end", "loading"],
     setup(_, context) {
         const arrayIngredients = ref([{value:"", quantity: null, measure: '', uuid: uuidv4()}])
-        const form = ref({
+        const form = ref<any>({
             name: "",
             category_id: "",
             image: "",
             number_of_servings: "",
             cooking_time: "",
-            how_to_cook: [""],
-            list_of_ingredients: [{}]
+            how_to_cook_text: "",
+            how_to_cook: null,
+            list_of_ingredients: computed(() => arrayIngredients.value.map((item) => {
+                item["name"] = item["value"]
+                return item
+            }))
         })
-        const how_to_cook = ref("")
+        form.value.how_to_cook = computed(() => form.value.how_to_cook_text.split("\n"))
         const categories = ref([])
 
         const handleAction = (value, key) => {
@@ -92,24 +96,15 @@ export default defineComponent({
 
         const handleFileUpload = (value) => form.value.image = value
 
-        const handleIngredientList = (item) => {
-            item["name"] = item["value"];
-            delete item["value"];
-            return item
-        }
-
         const clearForm = () => {
-            form.value = {
-                name: "",
-                category_id: "",
-                image: "",
-                number_of_servings: "",
-                cooking_time: "",
-                how_to_cook: [""],
-                list_of_ingredients: [{}]
-            }
+            form.value.name = ""
+            form.value.category_id = ""
+            form.value.image = ""
+            form.value.number_of_servings = ""
+            form.value.cooking_time = ""
+            form.value.how_to_cook_text = ""
+
             arrayIngredients.value = [{value:"", quantity: null, measure: '', uuid: uuidv4()}]
-            how_to_cook.value = ""
         }
 
         const handleSuccess = ({message}) => {
@@ -136,10 +131,7 @@ export default defineComponent({
         const store = useStore()
         const sendForm = async () => {
             context.emit("loading", true)
-            
-            form.value.list_of_ingredients = arrayIngredients.value.map(handleIngredientList)
-            form.value.how_to_cook = how_to_cook.value.split("\n")
-
+        
             try {
                 const token = store.getters.getToken
                 const response = await recipeService.saveRecipe(form.value, token)
@@ -170,29 +162,8 @@ export default defineComponent({
             sendForm,
             form,
             categories,
-            arrayIngredients,
-            how_to_cook
+            arrayIngredients
         }
     }
 })
 </script>
-
-<style scoped>
-.fileInput {
-        width: 0.1px;
-        height: 0.1px;
-        opacity: 0;
-        overflow: hidden;
-        position: absolute;
-        z-index: -1;
-    }
-.fileInput   label {
-    color: #717171;
-    background-color: white;
-    display: inline-block;
-    cursor: pointer;
-    padding: .5em 1em;
-    border: 1px solid #ccc;
-    cursor: pointer;
-}
-</style>
