@@ -21,7 +21,7 @@
       <div class="container">
         <ion-button v-if="recipes.length == 0" @click="openModal">Digitar Ingredientes</ion-button>
         <Modal :is-progress="isSendingRequest" title="Buscar receita" @onDismiss="closeModal" v-if="showModal">
-          <IngredientSearch @success="handleSuccess" @progress="handleProgress" />
+          <SearchRecipe @success="handleSuccess" @progress="handleProgress" />
         </Modal>
         <RecipesList v-if="recipes.length > 0" :recipeList="recipes" @click="handleSelectedRecipe" />
         <Modal text-close="Voltar" v-if="selectedRecipe" title="Detalhes da receita" @onDismiss="closeModalRecipe" >
@@ -35,7 +35,7 @@
 <script lang="ts">
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonButtons, IonIcon } from '@ionic/vue'
 import { searchOutline } from 'ionicons/icons';
-import { IngredientSearch } from '@/components/IngredientSearch'
+import { SearchRecipe } from '@/components/SearchRecipe'
 import { RecipesList, Recipe } from '@/components/Recipes'
 import { Modal } from '@/components/Common'
 import { defineComponent, ref } from 'vue'
@@ -48,7 +48,7 @@ export default defineComponent({
     IonTitle, 
     IonContent, 
     IonPage, 
-    IngredientSearch, 
+    SearchRecipe, 
     RecipesList,
     Recipe,
     IonButton,

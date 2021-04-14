@@ -1,24 +1,24 @@
 <template>
     <div>
-        <IngredientSearchOptions />
+        <SearchRecipeOptions />
         <IngredientList @change="updateIngredientList" />
-        <IngredientSearchSubmit @click="handleSubmit" />
+        <SearchRecipeSubmit @click="handleSubmit" />
 
         <Message @onDismiss="showMessage = false" :show="showMessage" :isSuccess="responseIsSuccessful" :message="returnMessage" />
     </div>
 </template>
 
 <script lang="ts">
-import IngredientSearchSubmit from "./IngredientSearchSubmit.vue"
-import IngredientSearchOptions from "./IngredientSearchOptions.vue"
+import SearchRecipeSubmit from "./SearchRecipeSubmit.vue"
+import SearchRecipeOptions from "./SearchRecipeOptions.vue"
 import IngredientList from "../Ingredient/IngredientList.vue"
 import { defineComponent, ref } from 'vue'
 import { recipeService } from "@/services"
 import { Message } from "@/components/Common"
 
 export default defineComponent({
-  name: 'IngredientSearch',
-  components: { IngredientList, IngredientSearchSubmit, IngredientSearchOptions, Message },
+  name: 'SearchRecipe',
+  components: { IngredientList, SearchRecipeSubmit, SearchRecipeOptions, Message },
   emits: [
     "progress", "success"
   ],

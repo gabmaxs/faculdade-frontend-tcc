@@ -25,13 +25,13 @@
 </template>
 
 <script lang="ts">
-import { IonItem, IonList, IonLabel, IonSelect, IonSelectOption, IonInput } from "@ionic/vue"
+import { IonItem, IonList, IonLabel, IonSelect, IonSelectOption, IonInput, IonIcon } from "@ionic/vue"
 import { defineComponent } from 'vue'
 import { optionsOutline } from "ionicons/icons"
 
 export default defineComponent({
     name: "IngredientSearchOptions",
-    components: { IonItem, IonList, IonLabel, IonSelect, IonSelectOption, IonInput },
+    components: { IonItem, IonList, IonLabel, IonSelect, IonSelectOption, IonInput, IonIcon },
     data() {
         return {
             showOptions: false
