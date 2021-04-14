@@ -5,6 +5,11 @@
           @action="(action) => handleAction(action, item.uuid)"  
           v-model="item.name"
           @update:modelValue = "() => emitUpdate()"
+          :has-config = hasConfig
+          v-model:quantity="item.quantity"
+          v-model:measure="item.measure"
+          @update:quantity = "() => emitUpdate()"
+          @update:measure = "() => emitUpdate()"
         />
     </div>
 </template>
@@ -18,16 +23,31 @@ export default defineComponent({
     name: "IngredientList",
     components: { IngredientInput },
     emits: ["change"],
+    props: {
+        hasConfig: {
+            type: Boolean,
+            default: false
+        }
+    },
     setup(props, context) {
-        const arrayIngredients = ref([{name:"", uuid: uuidv4()}])
+        const arrayIngredients = ref([{name:"", quantity: null, measure: '', uuid: uuidv4()}])
 
-        const emitUpdate = () => {
+        const emitNoConfig = () => {
             const ingredients = arrayIngredients.value.map((item) => item.name)
             context.emit("change", ingredients)
         }
 
+        const emitConfig = () => {
+            context.emit("change", arrayIngredients.value)
+        }
+
+        const emitUpdate = () => {
+            if(!props.hasConfig) emitNoConfig()
+            else emitConfig()
+        }
+
         const handleAction = (value: string, key: string) => {
-            if(value == "add")  arrayIngredients.value.push({name:"", uuid: uuidv4()})
+            if(value == "add")  arrayIngredients.value.push({name:"", quantity: null, measure: '', uuid: uuidv4()})
             if(value == "delete") arrayIngredients.value = arrayIngredients.value.filter(item => item.uuid != key)
 
             emitUpdate()

@@ -46,7 +46,6 @@ export default defineComponent({
 
     const handleSubmit = async () => {
       context.emit("progress", true)
-      console.log(ingredients.value)
       try {
         const response = await recipeService.searchRecipes(ingredients.value)
         await handleSuccess(response.data)

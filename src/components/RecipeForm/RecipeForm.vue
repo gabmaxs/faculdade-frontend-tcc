@@ -31,14 +31,7 @@
         <ion-item-divider>
             <ion-label>Ingredientes</ion-label>
         </ion-item-divider>
-        <IngredientSearchInput v-for="item in (arrayIngredients)" 
-          v-bind:key="item.uuid" 
-            @action="(action) => handleAction(action, item.uuid)"  
-            v-model="item.value" 
-            v-model:quantity="item.quantity"
-            v-model:measure="item.measure"
-            has-config
-        />
+        <IngredientList @change="updateIngredientList" has-config />
         <ion-item>
             <ion-label position="floating">Modo de preparo</ion-label>
             <ion-textarea rows="10" v-model="form.how_to_cook_text" placeholder="Separe cada passo com um Enter"></ion-textarea>
@@ -53,7 +46,7 @@
 
 <script lang="ts">
 import { categoryService, recipeService } from '@/services';
-import IngredientSearchInput from "@/components/IngredientSearch/IngredientSearchInput.vue"
+import IngredientList from "../Ingredient/IngredientList.vue"
 import { 
     IonItem, IonLabel, IonInput, IonSelect, IonSelectOption, IonTextarea,
     IonRow, IonCol, IonButton, IonItemDivider, IonItemGroup 
@@ -61,18 +54,16 @@ import {
 import { defineComponent, ref, computed } from 'vue'
 import { useStore } from 'vuex';
 import { FileUpload } from '@/components/Common'
-import { v4 as uuidv4 } from 'uuid'
 
 export default defineComponent({
     name: "RecipeForm",
     components: { 
         IonItem, IonLabel, IonInput, IonSelect, IonTextarea, IonSelectOption,
-        IonRow, IonCol, IonButton, IonItemDivider, IonItemGroup, IngredientSearchInput,
+        IonRow, IonCol, IonButton, IonItemDivider, IonItemGroup, IngredientList,
         FileUpload
     },
     emits: ["end", "loading"],
     setup(_, context) {
-        const arrayIngredients = ref([{value:"", quantity: null, measure: '', uuid: uuidv4()}])
         const form = ref<any>({
             name: "",
             category_id: "",
@@ -81,18 +72,12 @@ export default defineComponent({
             cooking_time: "",
             how_to_cook_text: "",
             how_to_cook: null,
-            list_of_ingredients: computed(() => arrayIngredients.value.map((item) => {
-                item["name"] = item["value"]
-                return item
-            }))
+            list_of_ingredients: {}
         })
         form.value.how_to_cook = computed(() => form.value.how_to_cook_text.split("\n"))
         const categories = ref([])
 
-        const handleAction = (value, key) => {
-            if(value == "add")  arrayIngredients.value.push({value:"", quantity: null, measure: '', uuid: uuidv4()})
-            if(value == "delete") arrayIngredients.value = arrayIngredients.value.filter(item => item.uuid != key)
-        }
+        const updateIngredientList = (list) => form.value.list_of_ingredients = list
 
         const handleFileUpload = (value) => form.value.image = value
 
@@ -103,8 +88,7 @@ export default defineComponent({
             form.value.number_of_servings = ""
             form.value.cooking_time = ""
             form.value.how_to_cook_text = ""
-
-            arrayIngredients.value = [{value:"", quantity: null, measure: '', uuid: uuidv4()}]
+            form.value.list_of_ingredients = {}
         }
 
         const handleSuccess = ({message}) => {
@@ -158,11 +142,10 @@ export default defineComponent({
 
         return {
             handleFileUpload,
-            handleAction,
+            updateIngredientList,
             sendForm,
             form,
             categories,
-            arrayIngredients
         }
     }
 })
