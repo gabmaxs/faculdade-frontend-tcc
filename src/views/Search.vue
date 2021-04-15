@@ -23,7 +23,7 @@
         <Modal :is-progress="isSendingRequest" title="Buscar receita" @onDismiss="closeModal" v-if="showModal">
           <SearchRecipe @success="handleSuccess" @progress="handleProgress" />
         </Modal>
-        <RecipesList v-if="recipes.length > 0" :recipeList="recipes" @click="handleSelectedRecipe" />
+        <RecipesList v-if="recipes.length > 0" :recipeList="recipes" @click="navigateToRecipe" />
         <Modal text-close="Voltar" v-if="selectedRecipe" title="Detalhes da receita" @onDismiss="closeModalRecipe" >
           <Recipe :recipeId="selectedRecipe" />
         </Modal>
@@ -38,7 +38,8 @@ import { searchOutline } from 'ionicons/icons';
 import { SearchRecipe } from '@/components/SearchRecipe'
 import { RecipesList, Recipe } from '@/components/Recipes'
 import { Modal } from '@/components/Common'
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, watchEffect } from 'vue'
+import { useRoute, useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'Search',
@@ -61,6 +62,8 @@ export default defineComponent({
     const recipes = ref<any>([])
     const showModal = ref(true)
     const selectedRecipe = ref<number>()
+    const route = useRoute()
+    const router = useRouter()
 
     const handleProgress = (state: any) => {
       isSendingRequest.value = state
@@ -79,20 +82,24 @@ export default defineComponent({
       showModal.value = false
     }
 
-    const closeModalRecipe = () => {
-      selectedRecipe.value = undefined
+    const navigateToRecipe = (id: number) => {
+      selectedRecipe.value = id
+      router.push({path: "/search", query: {recipeId: id}})
     }
 
-    const handleSelectedRecipe = (id: number) => {
-      selectedRecipe.value = id
+    const closeModalRecipe = () => {
+      selectedRecipe.value = undefined
+      router.back()
     }
+
+    watchEffect(() => route.query.recipeId ? navigateToRecipe(+route.query.recipeId) : "")
 
     return {
       handleProgress,
       handleSuccess,
       openModal,
       closeModal,
-      handleSelectedRecipe,
+      navigateToRecipe,
       closeModalRecipe,
       isSendingRequest,
       recipes,
