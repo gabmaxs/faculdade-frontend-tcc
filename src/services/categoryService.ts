@@ -17,9 +17,21 @@ function getCategories() {
   })
 }
 
+async function getCategoryName(categoryId: number) {
+    try {
+        const {data} = await getCategoryById(categoryId)
+        return data.data.name
+    }
+    catch(e) {
+        console.log(e)
+        return ""
+    }
+}
+
 const categoryService = {
     getCategoryById,
-    getCategories
+    getCategories,
+    getCategoryName
 }
 
 export default categoryService

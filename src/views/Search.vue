@@ -23,7 +23,7 @@
         <Modal :is-progress="isSendingRequest" title="Buscar receita" @onDismiss="closeModal" v-if="showModal">
           <SearchRecipe @success="handleSuccess" @progress="handleProgress" />
         </Modal>
-        <RecipesList v-if="recipes.length > 0" :recipeList="recipes" @click="navigateToRecipe" />
+        <RecipesList :recipeList="recipes" @click="navigateToRecipe" />
         <Modal text-close="Voltar" v-if="selectedRecipe" title="Detalhes da receita" @onDismiss="closeModalRecipe" >
           <Recipe :recipeId="selectedRecipe" />
         </Modal>

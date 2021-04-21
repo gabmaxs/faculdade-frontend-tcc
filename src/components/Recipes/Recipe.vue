@@ -34,6 +34,7 @@
                 </ion-list>
             </ion-card-content>
         </div>
+        <Message @onDismiss="messageConfig.show = false" :show="messageConfig.show" :isSuccess="messageConfig.isSuccess" :message="messageConfig.text" />
     </div>
 </template>
 
@@ -41,39 +42,45 @@
 import { categoryService, recipeService } from '@/services';
 import { defineComponent, ref } from 'vue';
 import { IonCardHeader, IonCardContent, IonCardTitle, IonCardSubtitle, IonList, IonListHeader, IonItem } from "@ionic/vue"
+import { Message } from "@/components/Common"
 
 export default defineComponent({
     name: "Recipe",
     props: ["recipeId"],
-    components: { IonCardHeader, IonCardContent, IonCardTitle, IonCardSubtitle, IonList, IonListHeader, IonItem },
+    components: { IonCardHeader, IonCardContent, IonCardTitle, IonCardSubtitle, IonList, IonListHeader, IonItem, Message },
     setup(props) {
         const recipe = ref()
         const categoryName = ref("")
+        const messageConfig = ref({
+            isSuccess: false,
+            text: "",
+            show: false
+        })
 
-        const resolveCategoryName = async (id) => {
-            try {
-                const {data} = await categoryService.getCategoryById(id)
-                return data.data.name
-            }
-            catch(e) {
-                console.log(e)
-                return ""
-            }
-        }
+        const resolveCategoryName = async (category_id) => categoryName.value = await categoryService.getCategoryName(category_id)
 
-        const handleSuccess = async ({data}) => {
+        const handleSuccess = async ({data, message}) => {
+            messageConfig.value.text = message
+            messageConfig.value.isSuccess = true
+            messageConfig.value.show = true
             recipe.value = data
-            console.log(data)
-            categoryName.value = await resolveCategoryName(data.category_id)
+            resolveCategoryName(data.category_id)
         }
 
-        const getRecipe = async (id) => {
+        const handleError = ({data, message}: {data: Array<any>; message: string}) => {
+            messageConfig.value.text = message
+            messageConfig.value.isSuccess = false
+            messageConfig.value.show = true
+            console.log(data, message)
+        }
+
+        const getRecipe = async (id: number) => {
             try {
                 const response = await recipeService.getRecipe(id)
                 handleSuccess(response.data)
             }
             catch(e) {
-                console.log(e)
+                handleError(e)
             }
         }
 
@@ -81,7 +88,8 @@ export default defineComponent({
 
         return {
             recipe,
-            categoryName
+            categoryName,
+            messageConfig
         }
     }
 })
