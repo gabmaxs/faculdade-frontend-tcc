@@ -4,7 +4,6 @@
             <ion-item v-for="recipe in newRecipeList" :key="recipe.id" @click="itemClicked(recipe.id)">
                 <ion-avatar slot="start">
                     <img v-if="recipe.image" :src="recipe.image">
-                    <img v-else src="../../../public/assets/image.jpeg">
                 </ion-avatar>
                 <ion-label>
                     <h2>{{ recipe.name }}</h2>

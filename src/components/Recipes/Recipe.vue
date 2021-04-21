@@ -3,7 +3,6 @@
         <div v-if="recipe">
             <div class="full-image">
                 <img v-if="recipe.image" :src="recipe.image">
-                <img v-else src="../../../public/assets/image.jpeg">
             </div>
             <ion-card-header>
                 <ion-card-title>{{ recipe.name }}</ion-card-title>
