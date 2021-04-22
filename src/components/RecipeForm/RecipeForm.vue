@@ -31,7 +31,7 @@
         <ion-item-divider>
             <ion-label>Ingredientes</ion-label>
         </ion-item-divider>
-        <IngredientList @change="updateIngredientList" has-config />
+        <IngredientList v-model="arrayIngredients" has-config />
         <ion-item>
             <ion-label position="floating">Modo de preparo</ion-label>
             <ion-textarea rows="10" v-model="form.how_to_cook_text" placeholder="Separe cada passo com um Enter"></ion-textarea>
@@ -54,6 +54,7 @@ import {
 import { defineComponent, ref, computed } from 'vue'
 import { useStore } from 'vuex';
 import { FileUpload } from '@/components/Common'
+import { v4 as uuidv4 } from 'uuid'
 
 export default defineComponent({
     name: "RecipeForm",
@@ -64,6 +65,7 @@ export default defineComponent({
     },
     emits: ["end", "loading"],
     setup(_, context) {
+        const arrayIngredients = ref([{name:"", quantity: null, measure: '', uuid: uuidv4(), dirty: false}])
         const form = ref<any>({
             name: "",
             category_id: "",
@@ -77,8 +79,6 @@ export default defineComponent({
         form.value.how_to_cook = computed(() => form.value.how_to_cook_text.split("\n"))
         const categories = ref([])
 
-        const updateIngredientList = (list) => form.value.list_of_ingredients = list
-
         const handleFileUpload = (value) => form.value.image = value
 
         const clearForm = () => {
@@ -89,6 +89,7 @@ export default defineComponent({
             form.value.cooking_time = ""
             form.value.how_to_cook_text = ""
             form.value.list_of_ingredients = {}
+            arrayIngredients.value = [{name:"", quantity: null, measure: '', uuid: uuidv4(), dirty: false}]
         }
 
         const handleSuccess = ({message}) => {
@@ -115,7 +116,7 @@ export default defineComponent({
         const store = useStore()
         const sendForm = async () => {
             context.emit("loading", true)
-        
+            form.value.list_of_ingredients = arrayIngredients.value
             try {
                 const token = store.getters.getToken
                 const response = await recipeService.saveRecipe(form.value, token)
@@ -142,7 +143,7 @@ export default defineComponent({
 
         return {
             handleFileUpload,
-            updateIngredientList,
+            arrayIngredients,
             sendForm,
             form,
             categories,

@@ -12,7 +12,7 @@
 import SearchRecipeSubmit from "./SearchRecipeSubmit.vue"
 import SearchRecipeOptions from "./SearchRecipeOptions.vue"
 import IngredientList from "../Ingredient/IngredientList.vue"
-import { defineComponent, onBeforeUnmount, ref } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { recipeService } from "@/services"
 import { Message } from "@/components/Common"
 import { useStore } from "vuex"
@@ -37,7 +37,7 @@ export default defineComponent({
       context.emit("success", data)
     }
 
-    const handleError = ({data, message}: {data: Array<any>; message: string}) => {
+    const handleError = ({message}: {message: string}) => {
       returnMessage.value = message
       responseIsSuccessful.value = false
       showMessage.value = true

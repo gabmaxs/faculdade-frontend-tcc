@@ -32,7 +32,6 @@ export default defineComponent({
         }
     },
     setup(props, context) {
-        console.log(props.modelValue)
         const ingredients = ref<any>(props.modelValue)
 
         const handleAction = (value: string, key: string) => {
