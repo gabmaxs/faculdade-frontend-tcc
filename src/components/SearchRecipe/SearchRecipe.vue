@@ -15,6 +15,7 @@ import IngredientList from "../Ingredient/IngredientList.vue"
 import { defineComponent, ref } from 'vue'
 import { recipeService } from "@/services"
 import { Message } from "@/components/Common"
+import { useStore } from "vuex"
 
 export default defineComponent({
   name: 'SearchRecipe',
@@ -27,22 +28,25 @@ export default defineComponent({
     const responseIsSuccessful = ref(false)
     const returnMessage = ref("")
     const showMessage = ref(false)
+    const store = useStore()
 
-    const handleSuccess = ({data, message, researched_ingredients}: {data: Array<any>; message: string; researched_ingredients:  Array<any>}) => {
+    const handleSuccess = ({data, message}: {data: Array<any>; message: string}) => {
       returnMessage.value = message
       responseIsSuccessful.value = true
       showMessage.value = true
-      context.emit("success", {list: data, researchedIngredients: researched_ingredients})
+      context.emit("success", data)
     }
 
     const handleError = ({data, message}: {data: Array<any>; message: string}) => {
       returnMessage.value = message
       responseIsSuccessful.value = false
       showMessage.value = true
-      console.log(data, message)
     }
 
-    const updateIngredientList = (list) => ingredients.value = list
+    const updateIngredientList = (list) => {
+      ingredients.value = list
+      store.commit("setList", list)
+    }
 
     const handleSubmit = async () => {
       context.emit("progress", true)

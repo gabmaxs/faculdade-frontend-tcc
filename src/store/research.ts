@@ -17,5 +17,6 @@ export default {
     },
     getters: {
       getList: state => state.ingredientList,
+      getListQuantity: state => state.ingredientList.length
     }
   }

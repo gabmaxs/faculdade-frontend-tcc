@@ -19,6 +19,7 @@ import { categoryService } from "@/services";
 import { computed, defineComponent, ref } from 'vue'
 import { IonItem, IonAvatar, IonLabel, IonChip, IonIcon } from "@ionic/vue"
 import { checkmarkCircleOutline } from 'ionicons/icons';
+import { useStore } from "vuex";
 
 export default defineComponent({    
     name: "RecipeItem",
@@ -28,13 +29,11 @@ export default defineComponent({
         recipe: {
             required: true,
             type: Object
-        },
-        researchedIngredients: {
-            type: Number
         }
     },
     setup(props, context) {
         const categoryName = ref("")
+        const store = useStore()
 
         const resolveCategoryName = async () => categoryName.value = await categoryService.getCategoryName(props.recipe.category_id)
 
@@ -45,7 +44,8 @@ export default defineComponent({
         return {
             checkmarkCircleOutline,
             categoryName,
-            click
+            click,
+            researchedIngredients: computed(() => store.getters.getListQuantity)
         }
     }
 })

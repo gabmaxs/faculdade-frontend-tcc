@@ -1,7 +1,7 @@
 <template>
     <div>
         <ion-list>
-            <RecipeItem v-for="recipe in recipeList" :recipe="recipe" :key="recipe.id" @click="itemClicked" :researchedIngredients="researchedIngredients.length" />
+            <RecipeItem v-for="recipe in recipeList" :recipe="recipe" :key="recipe.id" @click="itemClicked" />
         </ion-list>
     </div>
 </template>
@@ -13,14 +13,13 @@ import RecipeItem from "./RecipeItem.vue"
 
 export default defineComponent({
     name: "RecipesList",
-    props: ["recipeList", "researchedIngredients"],
+    props: ["recipeList"],
     components: {
         IonList, 
         RecipeItem
     },
     emits: ["click"],
-    setup(props,context) {
-        console.log(props.researchedIngredients)
+    setup(_,context) {
         const itemClicked = (id: number) => context.emit("click", id)
 
         return {
