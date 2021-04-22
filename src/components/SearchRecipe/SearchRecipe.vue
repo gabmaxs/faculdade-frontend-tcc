@@ -28,11 +28,11 @@ export default defineComponent({
     const returnMessage = ref("")
     const showMessage = ref(false)
 
-    const handleSuccess = ({data, message}: {data: Array<any>; message: string}) => {
+    const handleSuccess = ({data, message, researched_ingredients}: {data: Array<any>; message: string; researched_ingredients:  Array<any>}) => {
       returnMessage.value = message
       responseIsSuccessful.value = true
       showMessage.value = true
-      context.emit("success", data)
+      context.emit("success", {list: data, researchedIngredients: researched_ingredients})
     }
 
     const handleError = ({data, message}: {data: Array<any>; message: string}) => {

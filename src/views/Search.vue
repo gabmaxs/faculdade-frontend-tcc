@@ -23,7 +23,7 @@
         <Modal :is-progress="isSendingRequest" title="Buscar receita" @onDismiss="closeModal" v-if="showModal">
           <SearchRecipe @success="handleSuccess" @progress="handleProgress" />
         </Modal>
-        <RecipesList :recipeList="recipes" @click="navigateToRecipe" />
+        <RecipesList :recipeList="recipes.list" :researchedIngredients="recipes.researchedIngredients" @click="navigateToRecipe" />
         <Modal text-close="Voltar" v-if="selectedRecipe" title="Detalhes da receita" @onDismiss="closeModalRecipe" >
           <Recipe :recipeId="selectedRecipe" />
         </Modal>
@@ -59,7 +59,10 @@ export default defineComponent({
   },
   setup() {
     const isSendingRequest = ref(false)
-    const recipes = ref<any>([])
+    const recipes = ref({
+      list: [],
+      researchedIngredients: []
+    })
     const showModal = ref(true)
     const selectedRecipe = ref<number>()
     const route = useRoute()
@@ -69,9 +72,11 @@ export default defineComponent({
       isSendingRequest.value = state
     }
 
-    const handleSuccess = (list: any) => {
+    const handleSuccess = (response: any) => {
+      console.log(response)
       showModal.value = false
-      recipes.value = list
+      recipes.value.list = response.list
+      recipes.value.researchedIngredients = response.researchedIngredients
     }
 
     const openModal = () => {
