@@ -48,7 +48,7 @@ export default defineComponent({
     IonInput, IonItem, IonLabel, IonGrid, IonRow, 
     IonCol, IonButton, IonIcon,  IonSelect, IonSelectOption
   },
-  emits: ['update:modelValue', 'update:quantity', 'update:measure', 'action'],
+  emits: ['update:modelValue', 'update:quantity', 'update:measure', "update:dirty", 'action'],
   props: {
     modelValue: {
       type: String,
@@ -63,11 +63,15 @@ export default defineComponent({
     hasConfig: {
       type: Boolean,
       default: false
+    },
+    dirty: {
+      type: Boolean,
+      defaut: false
     }
   },
   setup(props, context) { 
-    const color = ref("primary")
-    const icon = ref(addOutline)
+    const color = ref(props.dirty ? "danger" : "primary")
+    const icon = ref(props.dirty ? trashOutline : addOutline)
 
     const clicked = () => {
       let action = "delete"
@@ -75,6 +79,7 @@ export default defineComponent({
         action = "add"
         color.value = "danger"
         icon.value = trashOutline
+        context.emit('update:dirty', true)
       }
       context.emit("action", action)
     }

@@ -1,15 +1,13 @@
 <template>
     <div>
-        <IngredientInput v-for="item in (arrayIngredients)" 
+        <IngredientInput v-for="item in (ingredients)" 
           v-bind:key="item.uuid" 
           @action="(action) => handleAction(action, item.uuid)"  
           v-model="item.name"
-          @update:modelValue = "() => emitUpdate()"
           :has-config = hasConfig
           v-model:quantity="item.quantity"
           v-model:measure="item.measure"
-          @update:quantity = "() => emitUpdate()"
-          @update:measure = "() => emitUpdate()"
+          v-model:dirty="item.dirty"
         />
     </div>
 </template>
@@ -22,41 +20,31 @@ import { v4 as uuidv4 } from 'uuid'
 export default defineComponent({
     name: "IngredientList",
     components: { IngredientInput },
-    emits: ["change"],
+    emits: ["update:modelValue"],
     props: {
         hasConfig: {
             type: Boolean,
             default: false
+        },
+        modelValue: {
+            required: true,
+            type: Array
         }
     },
     setup(props, context) {
-        const arrayIngredients = ref([{name:"", quantity: null, measure: '', uuid: uuidv4()}])
-
-        const emitNoConfig = () => {
-            const ingredients = arrayIngredients.value.map((item) => item.name)
-            context.emit("change", ingredients)
-        }
-
-        const emitConfig = () => {
-            context.emit("change", arrayIngredients.value)
-        }
-
-        const emitUpdate = () => {
-            if(!props.hasConfig) emitNoConfig()
-            else emitConfig()
-        }
+        console.log(props.modelValue)
+        const ingredients = ref<any>(props.modelValue)
 
         const handleAction = (value: string, key: string) => {
-            if(value == "add")  arrayIngredients.value.push({name:"", quantity: null, measure: '', uuid: uuidv4()})
-            if(value == "delete") arrayIngredients.value = arrayIngredients.value.filter(item => item.uuid != key)
+            if(value == "add")  ingredients.value.push({name:"", quantity: null, measure: '', uuid: uuidv4(), dirty: false})
+            if(value == "delete") ingredients.value = ingredients.value.filter(item => item.uuid != key)
 
-            emitUpdate()
+            context.emit("update:modelValue", ingredients.value)
         }
 
         return {
             handleAction,
-            emitUpdate,
-            arrayIngredients
+            ingredients
         }
     },
 })

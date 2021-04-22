@@ -1,7 +1,7 @@
 <template>
     <div>
         <SearchRecipeOptions />
-        <IngredientList @change="updateIngredientList" />
+        <IngredientList v-model="arrayIngredients"/>
         <SearchRecipeSubmit @click="handleSubmit" />
 
         <Message @onDismiss="showMessage = false" :show="showMessage" :isSuccess="responseIsSuccessful" :message="returnMessage" />
@@ -12,7 +12,7 @@
 import SearchRecipeSubmit from "./SearchRecipeSubmit.vue"
 import SearchRecipeOptions from "./SearchRecipeOptions.vue"
 import IngredientList from "../Ingredient/IngredientList.vue"
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onBeforeUnmount, ref } from 'vue'
 import { recipeService } from "@/services"
 import { Message } from "@/components/Common"
 import { useStore } from "vuex"
@@ -24,11 +24,11 @@ export default defineComponent({
     "progress", "success"
   ],
   setup(_, context) { 
-    const ingredients = ref([""])
     const responseIsSuccessful = ref(false)
     const returnMessage = ref("")
     const showMessage = ref(false)
     const store = useStore()
+    const arrayIngredients = ref(store.getters.getList)
 
     const handleSuccess = ({data, message}: {data: Array<any>; message: string}) => {
       returnMessage.value = message
@@ -43,15 +43,12 @@ export default defineComponent({
       showMessage.value = true
     }
 
-    const updateIngredientList = (list) => {
-      ingredients.value = list
-      store.commit("setList", list)
-    }
-
     const handleSubmit = async () => {
       context.emit("progress", true)
+      store.commit("setList", arrayIngredients.value)
+      const ingredients = arrayIngredients.value.map((item) => item.name)
       try {
-        const response = await recipeService.searchRecipes(ingredients.value)
+        const response = await recipeService.searchRecipes(ingredients)
         await handleSuccess(response.data)
       }
       catch(e) {
@@ -61,11 +58,11 @@ export default defineComponent({
     }
 
     return {
-      updateIngredientList,
       handleSubmit,
       responseIsSuccessful,
       returnMessage,
-      showMessage
+      showMessage,
+      arrayIngredients
     }
   }
 });
