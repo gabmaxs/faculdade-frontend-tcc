@@ -20,7 +20,7 @@
       </ion-header>
 
       <Message 
-          @dismiss="configMessage.showMessage = false" 
+          @dismiss="handleDismiss" 
           :show="configMessage.showMessage" 
           :isSuccess="configMessage.responseIsSuccessful" 
           :message="configMessage.returnMessage" 
@@ -32,8 +32,8 @@
           @progress="changeProgress" 
           @end="handleEnd"
         />
-        <ProfileCard v-if="userIsLogged" />
       </div>
+        <ProfileCard v-if="userIsLogged" @progress="changeProgress" @end="handleEnd" />
     </ion-content>
   </ion-page>
 </template>
@@ -78,6 +78,12 @@ export default defineComponent({
       configMessage.value = config
     }
 
+    const handleDismiss = () => {
+      configMessage.value.showMessage = false
+      configMessage.value.responseIsSuccessful = false
+      configMessage.value.returnMessage = ""
+    }
+
     const logout = () => {
       store.commit("removeUser")
     }
@@ -88,6 +94,7 @@ export default defineComponent({
       handleEnd,
       logout,
       changeProgress,
+      handleDismiss,
       userIsLogged,
       logOutOutline,
       isProgress,

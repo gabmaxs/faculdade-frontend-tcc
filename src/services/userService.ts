@@ -47,10 +47,21 @@ function getProfile(token: string) {
   })
 }
 
+function saveProfile(user: any, token: string) {
+  return axios.put(`${API_URL}/user/profile`, JSON.stringify(user), {
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    } 
+  })
+}
+
 const userService = {
     login,
     register,
-    getProfile
+    getProfile,
+    saveProfile
 }
 
 export default userService
