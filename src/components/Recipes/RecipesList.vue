@@ -26,3 +26,11 @@ export default defineComponent({
     }
 })
 </script>
+
+<style scoped>
+ion-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+</style>

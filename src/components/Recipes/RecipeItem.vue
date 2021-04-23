@@ -1,32 +1,30 @@
 <template>
-    <ion-item>
-        <ion-card>
-            <img class="card-img" v-if="recipe.image" :src="recipe.image">
-            <ion-card-header>
-                <ion-card-title>{{ recipe.name }}</ion-card-title>
-                <ion-card-subtitle> <ion-badge color="secondary"> {{ categoryName }} </ion-badge></ion-card-subtitle>
-            </ion-card-header>
-            <ion-card-content>
-                <ion-chip color="success">
-                    <ion-label>Você possui {{ recipe.matched_ingredients.length }}/{{ recipe.total_ingredients }} ingredientes</ion-label>
-                </ion-chip> 
-                <ion-chip color="tertiary">
-                    <ion-label>Essa receita possui {{ recipe.matched_ingredients.length }}/{{ researchedIngredients }} ingredientes</ion-label>
-                </ion-chip>
-            </ion-card-content>
-        </ion-card>
-    </ion-item>
+    <ion-card @click="click(recipe.id)">
+        <img class="card-img" v-if="recipe.image" :src="recipe.image">
+        <ion-card-header>
+            <ion-card-title>{{ recipe.name }}</ion-card-title>
+            <ion-card-subtitle> <ion-badge color="secondary"> {{ categoryName }} </ion-badge></ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-chip color="success">
+                <ion-label>Você possui {{ recipe.matched_ingredients.length }}/{{ recipe.total_ingredients }} ingredientes</ion-label>
+            </ion-chip> 
+            <ion-chip color="tertiary">
+                <ion-label>Essa receita possui {{ recipe.matched_ingredients.length }}/{{ researchedIngredients }} ingredientes</ion-label>
+            </ion-chip>
+        </ion-card-content>
+    </ion-card>
 </template>
 
 <script lang="ts">
 import { categoryService } from "@/services";
 import { computed, defineComponent, ref } from 'vue'
-import { IonItem, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonLabel, IonChip, IonBadge } from "@ionic/vue"
+import { IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonLabel, IonChip, IonBadge } from "@ionic/vue"
 import { useStore } from "vuex";
 
 export default defineComponent({    
     name: "RecipeItem",
-    components: { IonItem, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonLabel, IonChip, IonBadge },
+    components: { IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonLabel, IonChip, IonBadge },
     emits: ["click"],
     props: {
         recipe: {
@@ -58,7 +56,7 @@ export default defineComponent({
     width: 100%;
 }
 
-ion-item {
-    max-width: 350px;
+ion-card {
+    max-width: 300px;
 }
 </style>
