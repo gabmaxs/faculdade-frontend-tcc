@@ -1,32 +1,34 @@
 <template>
-    <div></div>
+    <div>
+        <ion-toast
+            :is-open="show"
+            :message="message"
+            :duration="2000"
+            @onDidDismiss="handleDismiss"
+        >
+  </ion-toast>
+
+    </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue'
-import { toastController } from "@ionic/vue"
+import { defineComponent } from 'vue'
+import { IonToast } from '@ionic/vue';
 export default defineComponent({
     name: "Toast",
     props: [
-        "message"
+        "message", "show"
     ],
     emits: [
         "dismiss"
     ],
-    setup(props,context) {
-        const openToast = async () => {
-            const toast = await toastController.create({
-                message: props.message,
-                duration: 2000
-            })
+    components: { IonToast },
+    setup(_, context) {
+        const handleDismiss = () => context.emit("dismiss")
 
-            await toast.present()
-
-            await toast.onDidDismiss()
-            context.emit("dismiss", true)
+        return {
+            handleDismiss
         }
-
-        onMounted(() => openToast())
     }
 })
 </script>

@@ -1,15 +1,16 @@
 <template>
-    <div v-if="show">
+    <div>
         <Toast 
           :message="message" 
-          v-if="isSuccess" 
-          @dismiss="dismiss"
+          @dismiss="handleDismiss"
+          :show="show"
+          v-if="isSuccess && show" 
         />
 
         <Alert 
           :message="message" 
-          v-if="!isSuccess" 
-          @dismiss="dismiss"
+          v-if="!isSuccess && show" 
+          @dismiss="handleDismiss"
         />
     </div>
 </template>
@@ -39,12 +40,10 @@ export default defineComponent({
         }
     },
     setup(_, context) {
-        const dismiss = () => {
-            context.emit("dismiss", true)
-        }
+        const handleDismiss = () => context.emit("dismiss")
 
         return {
-            dismiss
+            handleDismiss
         }
     }
 })
