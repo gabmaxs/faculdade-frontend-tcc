@@ -7,10 +7,10 @@
             <h2>{{ recipe.name }}</h2>
             <h3>{{ categoryName }}</h3>  
         </ion-label>
-        <ion-chip slot="end" color="tertiary">
-            <ion-label>{{ recipe.matched_ingredients.length }}/{{ researchedIngredients }}</ion-label>
+        <ion-chip slot="end" color="success">
+            <ion-label>{{ recipe.matched_ingredients.length }}/{{ recipe.total_ingredients }}</ion-label>
             <ion-icon :icon="checkmarkCircleOutline"></ion-icon>
-        </ion-chip>  
+        </ion-chip> 
     </ion-item>
 </template>
 
@@ -42,10 +42,9 @@ export default defineComponent({
         resolveCategoryName()
 
         return {
+            click,
             checkmarkCircleOutline,
             categoryName,
-            click,
-            researchedIngredients: computed(() => store.getters.getListQuantity)
         }
     }
 })
