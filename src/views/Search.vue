@@ -8,7 +8,7 @@
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
-    <ion-content :fullscreen="true">
+    <ion-content :fullscreen="true" :forceOverscroll="true">
       <ion-header collapse="condense">
         <ion-toolbar>
           <ion-title size="large">Buscar receita</ion-title>
@@ -20,14 +20,14 @@
       
       <div class="container">
         <ion-button v-if="recipes.length == 0" @click="openModal">Digitar Ingredientes</ion-button>
-        <Modal :is-progress="isSendingRequest" title="Buscar receita" @onDismiss="closeModal" v-if="showModal">
-          <SearchRecipe @success="handleSuccess" @progress="handleProgress" />
-        </Modal>
-        <RecipesList :recipeList="recipes" @click="navigateToRecipe" />
-        <Modal text-close="Voltar" v-if="selectedRecipe" title="Detalhes da receita" @onDismiss="closeModalRecipe" >
-          <Recipe :recipeId="selectedRecipe" />
-        </Modal>
       </div>
+      <Modal :is-progress="isSendingRequest" title="Buscar receita" @onDismiss="closeModal" v-if="showModal">
+        <SearchRecipe @success="handleSuccess" @progress="handleProgress" />
+      </Modal>
+      <RecipesList :recipeList="recipes" @click="navigateToRecipe" />
+      <Modal text-close="Voltar" v-if="selectedRecipe" title="Detalhes da receita" @onDismiss="closeModalRecipe" >
+        <Recipe :recipeId="selectedRecipe" />
+      </Modal>
     </ion-content>
   </ion-page>
 </template>
