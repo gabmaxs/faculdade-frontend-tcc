@@ -1,9 +1,7 @@
 <template>
-    <div>
-        <ion-list>
-            <RecipeItem v-for="recipe in recipeList" :recipe="recipe" :key="recipe.id" @click="itemClicked" />
-        </ion-list>
-    </div>
+    <ion-list>
+        <RecipeItem v-for="recipe in recipeList" :recipe="recipe" :key="recipe.id" @click="itemClicked" />
+    </ion-list>
 </template>
 
 <script lang="ts">

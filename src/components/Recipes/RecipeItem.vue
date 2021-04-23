@@ -1,29 +1,32 @@
 <template>
-    <ion-item @click="click(recipe.id)">
-        <ion-avatar slot="start">
-            <img v-if="recipe.image" :src="recipe.image">
-        </ion-avatar>
-        <ion-label>
-            <h2>{{ recipe.name }}</h2>
-            <h3>{{ categoryName }}</h3>  
-        </ion-label>
-        <ion-chip slot="end" color="success">
-            <ion-label>{{ recipe.matched_ingredients.length }}/{{ recipe.total_ingredients }}</ion-label>
-            <ion-icon :icon="checkmarkCircleOutline"></ion-icon>
-        </ion-chip> 
+    <ion-item>
+        <ion-card>
+            <img class="card-img" v-if="recipe.image" :src="recipe.image">
+            <ion-card-header>
+                <ion-card-title>{{ recipe.name }}</ion-card-title>
+                <ion-card-subtitle> <ion-badge color="secondary"> {{ categoryName }} </ion-badge></ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+                <ion-chip color="success">
+                    <ion-label>Você possui {{ recipe.matched_ingredients.length }}/{{ recipe.total_ingredients }} ingredientes</ion-label>
+                </ion-chip> 
+                <ion-chip color="tertiary">
+                    <ion-label>Essa receita possui {{ recipe.matched_ingredients.length }}/{{ researchedIngredients }} ingredientes</ion-label>
+                </ion-chip>
+            </ion-card-content>
+        </ion-card>
     </ion-item>
 </template>
 
 <script lang="ts">
 import { categoryService } from "@/services";
 import { computed, defineComponent, ref } from 'vue'
-import { IonItem, IonAvatar, IonLabel, IonChip, IonIcon } from "@ionic/vue"
-import { checkmarkCircleOutline } from 'ionicons/icons';
+import { IonItem, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonLabel, IonChip, IonBadge } from "@ionic/vue"
 import { useStore } from "vuex";
 
 export default defineComponent({    
     name: "RecipeItem",
-    components: { IonItem, IonAvatar, IonLabel, IonChip, IonIcon },
+    components: { IonItem, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonLabel, IonChip, IonBadge },
     emits: ["click"],
     props: {
         recipe: {
@@ -43,9 +46,19 @@ export default defineComponent({
 
         return {
             click,
-            checkmarkCircleOutline,
             categoryName,
+            researchedIngredients: computed(() => store.getters.getListQuantity)
         }
     }
 })
 </script>
+
+<style scoped>
+.card-img {
+    width: 100%;
+}
+
+ion-item {
+    max-width: 350px;
+}
+</style>
