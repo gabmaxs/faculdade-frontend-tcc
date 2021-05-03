@@ -1,6 +1,6 @@
 <template>
     <div>
-        <SearchRecipeOptions />
+        <SearchRecipeOptions v-model="options" />
         <IngredientList v-model="arrayIngredients"/>
         <SearchRecipeSubmit @click="handleSubmit" />
 
@@ -29,6 +29,7 @@ export default defineComponent({
     const showMessage = ref(false)
     const store = useStore()
     const arrayIngredients = ref(store.getters.getList)
+    const options = ref(store.getters.getOptions)
 
     const handleSuccess = ({data, message}: {data: Array<any>; message: string}) => {
       returnMessage.value = message
@@ -46,9 +47,10 @@ export default defineComponent({
     const handleSubmit = async () => {
       context.emit("progress", true)
       store.commit("setList", arrayIngredients.value)
+      store.commit("setOptions", options.value)
       const ingredients = arrayIngredients.value.map((item) => item.name)
       try {
-        const response = await recipeService.searchRecipes(ingredients)
+        const response = await recipeService.searchRecipes(ingredients, options.value)
         await handleSuccess(response.data)
       }
       catch(e) {
@@ -59,6 +61,7 @@ export default defineComponent({
 
     return {
       handleSubmit,
+      options,
       responseIsSuccessful,
       returnMessage,
       showMessage,

@@ -1,10 +1,13 @@
 import axios from 'axios'
 import { API_URL } from "@/API_URL"
 
-function searchRecipes(ingredients: string[], page = 1) {
+function searchRecipes(ingredients: string[], {page = 1, category, min_time, max_time}) {
   return axios.get(`${API_URL}/recipe?page=${page}`, {
     params: {
-      ingredients: ingredients
+      ingredients: ingredients,
+      category,
+      min_time,
+      max_time
     },
     headers: {
       Accept: "application/json"
