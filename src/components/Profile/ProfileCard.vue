@@ -96,7 +96,7 @@ export default  defineComponent({
                 handleSuccess(response.data)
             }
             catch(e) {
-                handleError(e.response)
+                handleError(e.response.data)
             }
         }
 
@@ -109,7 +109,7 @@ export default  defineComponent({
             }
             catch(e) {
                 console.log(e)
-                handleError(e.response)
+                handleError(e.response.data)
             }
         }
 
