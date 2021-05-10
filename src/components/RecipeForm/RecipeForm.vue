@@ -22,6 +22,11 @@
                 <ion-select-option value="3">3 Pessoas</ion-select-option>
                 <ion-select-option value="4">4 Pessoas</ion-select-option>
                 <ion-select-option value="5">5 Pessoas</ion-select-option>
+                <ion-select-option value="6">6 Pessoa</ion-select-option>
+                <ion-select-option value="7">7 Pessoas</ion-select-option>
+                <ion-select-option value="8">8 Pessoas</ion-select-option>
+                <ion-select-option value="9">9 Pessoas</ion-select-option>
+                <ion-select-option value="10">10 Pessoas</ion-select-option>
             </ion-select>
         </ion-item>
         <ion-item>
