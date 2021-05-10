@@ -10,7 +10,7 @@
                     <ion-col size="6">
                         <ion-item>
                             <ion-label position="floating">Quantidade</ion-label>
-                            <ion-input type="number" @ionInput="$emit('update:quantity', $event.target.value)" :value="quantity"></ion-input>
+                            <ion-input type="number" step="0.05" @ionInput="$emit('update:quantity', $event.target.value)" :value="quantity"></ion-input>
                         </ion-item>
                     </ion-col>
                     <ion-col size="6">
