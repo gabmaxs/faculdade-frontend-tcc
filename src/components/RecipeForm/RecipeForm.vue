@@ -4,9 +4,9 @@
               <ion-label position="floating">Nome da receita</ion-label>
               <ion-input v-model="form.name" type="text"></ion-input>
         </ion-item>
-        <ion-item>
-              <label for="file">Selecionar imagem</label>
-        </ion-item>
+        <ion-item-divider>
+            <ion-label>Selecionar imagem</ion-label>
+        </ion-item-divider>
         <FileUpload @fileUploadComplete="handleFileUpload" server="recipe/image" />
         <ion-item>
             <ion-label position="floating">Tipo de receita</ion-label>
