@@ -33,10 +33,19 @@ function saveRecipe(recipe: any, token) {
   })
 }
 
+function getMeasure() {
+  return axios.get(`${API_URL}/measure`, {
+    headers: {
+      Accept: "application/json"
+    }
+  })
+}
+
 const recipeService = {
   searchRecipes,
   getRecipe,
-  saveRecipe
+  saveRecipe,
+  getMeasure
 }
 
 export default recipeService

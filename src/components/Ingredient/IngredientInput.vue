@@ -17,11 +17,7 @@
                         <ion-item>
                             <ion-label position="floating">Medida</ion-label>
                             <ion-select interface="action-sheet" cancel-text="Cancelar" @ionChange="$emit('update:measure', $event.target.value)" :value="measure">
-                              <ion-select-option value="unidade">Unidade</ion-select-option>
-                              <ion-select-option value="gramas">Gramas</ion-select-option>
-                              <ion-select-option value="xícara">Xícara</ion-select-option>
-                              <ion-select-option value="colher de sopa">Colher de sopa</ion-select-option>
-                              <ion-select-option value="colher de chá">Colher de chá</ion-select-option>
+                              <ion-select-option v-for="measure in measures" :key="measure" :value="measure">{{ measure.charAt(0).toUpperCase() + measure.slice(1) }}</ion-select-option>
                             </ion-select>
                         </ion-item>
                     </ion-col>
@@ -35,6 +31,7 @@
 </template>
 
 <script lang="ts">
+import { recipeService } from '@/services';
 import { 
   IonInput, IonItem, IonLabel, IonGrid, IonRow, 
   IonCol, IonButton, IonIcon, IonSelect, IonSelectOption
@@ -72,6 +69,7 @@ export default defineComponent({
   setup(props, context) { 
     const color = ref(props.dirty ? "danger" : "primary")
     const icon = ref(props.dirty ? trashOutline : addOutline)
+    const measures = ref([])
 
     const clicked = () => {
       let action = "delete"
@@ -93,11 +91,24 @@ export default defineComponent({
         ))
     })
 
+    const getMeasure = async () => {
+      try {
+        const response = await recipeService.getMeasure()
+        measures.value = response.data.data
+      }
+      catch(e) {
+        console.log(e || e.response)
+      }
+    }
+
+    getMeasure()
+
     return {
       clicked,
       color,
       icon,
-      isDisabled
+      isDisabled,
+      measures
     }
   }
 });
