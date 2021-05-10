@@ -1,10 +1,25 @@
 <template>
     <div>
-        <file-pond ref="pond" allow-multiple="false" @processfiles="handleFile" accepted-file-types="image/jpeg, image/png" name="image" :server="filePondURL" />
+        <file-pond 
+            ref="pond" :allow-multiple="false" @processfiles="handleFile" 
+            labelIdle='Arraste ou <span class="filepond--label-action"> procure</span> o arquivo'
+            labelInvalidField="Arquivo inválido"
+            labelFileLoading="Carregando"
+            labelFileProcessingComplete="Upload completo"
+            labelFileProcessingAborted="Upload cancelado"
+            labelFileProcessingError="Erro durante o upload"
+            labelFileRemoveError="Erro ao remover"
+            labelTapToCancel="Cancelar"
+            labelTapToRetry="Tentar novamente"
+            labelButtonRemoveItem="Remover"
+            labelButtonAbortItemLoad="Abortar"
+            labelTapToUndo="Desfazer"
+            accepted-file-types="image/jpeg, image/png" name="image" :server="filePondURL" 
+        />
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, ref } from 'vue'
 
 // Import Vue FilePond
@@ -18,7 +33,7 @@ import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orien
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import { API_URL } from '@/API_URL';
 // Create component
-const FilePond = vueFilePond(
+const FilePond: any = vueFilePond(
   FilePondPluginFileValidateType,
   FilePondPluginImageExifOrientation
 );
@@ -33,7 +48,7 @@ export default defineComponent({
     },
     setup(props, context) {
         const filePondURL = `${API_URL}/${props.server}`
-        const pond = ref(null)
+        const pond = ref<any>(null)
         const handleFile = () => context.emit("fileUploadComplete", pond.value.getFile().serverId)
 
         return {
