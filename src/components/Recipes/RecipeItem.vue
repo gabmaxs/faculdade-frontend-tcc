@@ -7,10 +7,10 @@
         </ion-card-header>
         <ion-card-content>
             <ion-chip color="success">
-                <ion-label>Você possui {{ recipe.matched_ingredients.length }}/{{ recipe.total_ingredients }} ingredientes</ion-label>
+                <ion-label>{{ recipe.matched_ingredients.length }}/{{ recipe.total_ingredients }} ingredientes necessários</ion-label>
             </ion-chip> 
             <ion-chip color="tertiary">
-                <ion-label>Essa receita possui {{ recipe.matched_ingredients.length }}/{{ researchedIngredients }} ingredientes</ion-label>
+                <ion-label>{{ recipe.matched_ingredients.length }}/{{ researchedIngredients }} ingredientes pesquisados</ion-label>
             </ion-chip>
         </ion-card-content>
     </ion-card>
