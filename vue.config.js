@@ -2,22 +2,27 @@ module.exports = {
     pwa: {
         name: "icook",
         manifestOptions: {
-            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eget lorem vitae magna varius convallis in vitae felis. Aenean lacus dui, ullamcorper vel nibh et, condimentum feugiat augue. Maecenas ultrices lorem at maximus maximus. Sed at nunc id ante porttitor ultricies eget non libero.",
+            description: "Aplicativo para a busca de receitas baseado nos ingredientes pesquisados.",
             screenshots: [
                 {
-                    src: "./img/screenshots/example.png",
-                    type: "image/png",
-                    sizes: "541x702"
+                    src: "./img/screenshots/busca-simples-gif.gif",
+                    type: "image/gif",
+                    sizes: "400x650"
                 },
                 {
-                    src: "./img/screenshots/example.png",
-                    type: "image/png",
-                    sizes: "541x702"
+                    src: "./img/screenshots/busca-avancada-gif.gif",
+                    type: "image/gif",
+                    sizes: "400x650"
                 },
                 {
-                    src: "./img/screenshots/example.png",
-                    type: "image/png",
-                    sizes: "541x702"
+                    src: "./img/screenshots/cadastro-receita-gif.gif",
+                    type: "image/gif",
+                    sizes: "400x650"
+                },
+                {
+                    src: "./img/screenshots/login-gif.gif",
+                    type: "image/gif",
+                    sizes: "400x650"
                 }
             ]
         }
