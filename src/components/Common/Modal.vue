@@ -16,14 +16,6 @@
                     </ion-toolbar>
                 </ion-header>
                 <ion-content :fullscreen="true">
-                    <ion-header collapse="condense">
-                        <ion-toolbar>
-                            <ion-title size="large">{{ title }}</ion-title>
-                            <ion-buttons slot="end">
-                                <ion-button @click="dismissModal">{{ textClose || 'Cancelar' }}</ion-button>
-                            </ion-buttons>
-                        </ion-toolbar>
-                    </ion-header>
                 
                     <div class="container">
                         <!-- COMPONENT ENTRA AQUI -->

@@ -10,14 +10,6 @@
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Perfil</ion-title>
-          <ion-buttons v-if="userIsLogged" slot="end">
-            <ion-button @click="logout"><ion-icon :icon="logOutOutline"></ion-icon></ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
 
       <Message 
           @dismiss="handleDismiss" 

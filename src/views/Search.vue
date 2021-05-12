@@ -9,14 +9,6 @@
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true" :forceOverscroll="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Buscar receita</ion-title>
-          <ion-buttons slot="end">
-              <ion-button @click="openModal"><ion-icon :icon="searchOutline"></ion-icon></ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
       
       <div class="container">
         <ion-button v-if="recipes.length == 0" @click="openModal">Digitar Ingredientes</ion-button>
