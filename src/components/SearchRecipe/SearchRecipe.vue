@@ -54,7 +54,7 @@ export default defineComponent({
         await handleSuccess(response.data)
       }
       catch(e) {
-        handleError(e)
+        handleError(e.response.data || e)
       }
       context.emit("progress", false)
     }

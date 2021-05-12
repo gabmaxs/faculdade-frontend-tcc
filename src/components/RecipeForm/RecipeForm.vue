@@ -128,9 +128,7 @@ export default defineComponent({
                 handleSuccess(response.data)
             }
             catch(e) {
-                console.log(e) 
-                console.log(e.response)
-                handleError(e.response)
+                handleError(e.response.data || e)
             }
         }
 

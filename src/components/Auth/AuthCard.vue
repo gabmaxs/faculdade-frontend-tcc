@@ -61,7 +61,7 @@ export default defineComponent({
                 if(response.status === 200) await handleUserLogged(response.data)
             }
             catch(e) {
-                handleError(e)
+                handleError(e.response.data || e)
             }
             context.emit("progress", false)
         }
@@ -73,7 +73,7 @@ export default defineComponent({
                 if(response.status === 201) await handleUserLogged(response.data)
             }
             catch(e) {
-                handleError(e)
+                handleError(e.response.data || e)
             }
             context.emit("progress", false)
         }

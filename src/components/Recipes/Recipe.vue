@@ -80,7 +80,7 @@ export default defineComponent({
                 handleSuccess(response.data)
             }
             catch(e) {
-                handleError(e)
+                handleError(e.response.data || e)
             }
         }
 
