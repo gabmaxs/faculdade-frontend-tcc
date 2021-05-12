@@ -108,12 +108,17 @@ export default defineComponent({
             context.emit("loading", false)
         }
 
-        const handleError = ({message}) => {
+        const handleError = ({message, error}: {message: any; error: any}) => {
             const data = {
                 returnMessage: message,
                 responseIsSuccessful: false,
                 showMessage: true
             }
+
+            if(error.code == 422) {
+                data.returnMessage = Object.values(message)[0]
+            }
+
             context.emit("end", data)
             context.emit("loading", false)
         }
@@ -128,6 +133,7 @@ export default defineComponent({
                 handleSuccess(response.data)
             }
             catch(e) {
+                console.log(e.response)
                 handleError(e.response.data || e)
             }
         }
