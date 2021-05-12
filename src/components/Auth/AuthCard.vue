@@ -1,22 +1,24 @@
 <template>
-    <ion-card>
-        <ion-card-header>
-            <ion-card-title>{{ isLoginCard ? 'Entrar' : 'Registrar' }}</ion-card-title>
-        </ion-card-header>
+    <div class="container">
+        <ion-card>
+            <ion-card-header>
+                <ion-card-title>{{ isLoginCard ? 'Entrar' : 'Registrar' }}</ion-card-title>
+            </ion-card-header>
 
-        <ion-card-content>
-            <AuthCardLogin 
-                v-if="isLoginCard" 
-                @wantChange="isLoginCard = false" 
-                @wantLogin="login" 
-            />
-            <AuthCardRegister 
-                v-if="!isLoginCard" 
-                @wantChange="isLoginCard = true" 
-                @wantRegister="register" 
-            />
-        </ion-card-content>
-    </ion-card> 
+            <ion-card-content>
+                <AuthCardLogin 
+                    v-if="isLoginCard" 
+                    @wantChange="isLoginCard = false" 
+                    @wantLogin="login" 
+                />
+                <AuthCardRegister 
+                    v-if="!isLoginCard" 
+                    @wantChange="isLoginCard = true" 
+                    @wantRegister="register" 
+                />
+            </ion-card-content>
+        </ion-card> 
+    </div>
 </template>
 
 <script lang="ts">
@@ -86,3 +88,14 @@ export default defineComponent({
     }
 })
 </script>
+
+<style scoped>
+.container {
+  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+</style>

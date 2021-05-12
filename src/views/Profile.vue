@@ -18,14 +18,12 @@
           :message="configMessage.returnMessage" 
       />
     
-      <div class="container">
-        <AuthCard 
-          v-if="!userIsLogged" 
-          @progress="changeProgress" 
-          @end="handleEnd"
-        />
-      </div>
-        <ProfileCard v-if="userIsLogged" @progress="changeProgress" @end="handleEnd" />
+      <AuthCard 
+        v-if="!userIsLogged" 
+        @progress="changeProgress" 
+        @end="handleEnd"
+      />
+      <ProfileCard v-if="userIsLogged" @progress="changeProgress" @end="handleEnd" />
     </ion-content>
   </ion-page>
 </template>
@@ -95,14 +93,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style scoped>
-.container {
-  text-align: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-}
-</style>
