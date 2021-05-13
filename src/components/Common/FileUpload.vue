@@ -14,7 +14,9 @@
             labelButtonRemoveItem="Remover"
             labelButtonAbortItemLoad="Abortar"
             labelTapToUndo="Desfazer"
-            accepted-file-types="image/jpeg, image/png" name="image" :server="filePondURL" 
+            :allow-browse="true"
+            :allow-drop="true"
+            :accepted-file-types="['image/jpeg', 'image/png', 'image/jpg']" name="image" :server="filePondURL" 
         />
     </div>
 </template>
