@@ -15,8 +15,9 @@
                     <ion-list-header>Ingredientes</ion-list-header>
                     <ion-item>
                         <ul>
-                            <li v-for="(ingredient, k) in recipe.ingredients" :key="k">
-                                <span>{{ `${ingredient.quantity} ${ingredient.measure} de ${ingredient.name}`}}</span>
+                            <li v-for="(ingredient) in recipe.ingredients" :key="ingredient.name">
+                                <span v-if="ingredient.quantity > 0">{{ `${ingredient.quantity} ${ingredient.measure} de ${ingredient.name}`}}</span>
+                                <span v-else>{{ `${ingredient.name} a gosto` }}</span>
                             </li>
                         </ul>
                     </ion-item>
@@ -26,7 +27,7 @@
                     <ion-list-header>Preparo</ion-list-header>
                     <ion-item>
                         <ul>
-                            <li v-for="(cook, k) in recipe.how_to_cook" :key="k">
+                            <li v-for="(cook) in recipe.how_to_cook" :key="cook">
                                 <span>{{ cook }}</span>
                             </li>
                         </ul>
