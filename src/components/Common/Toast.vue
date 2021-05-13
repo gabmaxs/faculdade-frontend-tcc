@@ -3,7 +3,7 @@
         <ion-toast
             :is-open="show"
             :message="message"
-            :duration="2000"
+            :duration="1200"
             @onDidDismiss="handleDismiss"
         >
   </ion-toast>
