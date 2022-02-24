@@ -10,8 +10,12 @@
     </ion-header>
     <ion-content :fullscreen="true" :forceOverscroll="true">
       
-      <div class="container">
-        <ion-card @click="openModal" v-if="recipes.length == 0">
+      <div v-if="recipes.length == 0" class="container">
+        <div class="user-div" v-if="userIsLogged">
+          <span>Olá,</span> 
+          <span class="user-name">{{ user.name }}</span>
+        </div>
+        <ion-card @click="openModal">
           <ion-grid>
             <ion-row>
               <ion-col size="7" class="ion-text-start">
@@ -30,7 +34,9 @@
       <Modal :is-progress="isSendingRequest" title="Buscar receita" @onDismiss="closeModal" v-if="showModal">
         <SearchRecipe @success="handleSuccess" @progress="handleProgress" />
       </Modal>
-      <RecipesList v-if="recipes.length > 0" :recipeList="recipes" @click="navigateToRecipe" />
+      <div class="div-list" v-if="recipes.length > 0">
+        <RecipesList :recipeList="recipes" @click="navigateToRecipe" />
+      </div>
       <Modal text-close="Voltar" v-if="selectedRecipe" title="Detalhes da receita" @onDismiss="closeModalRecipe" >
         <Recipe :recipeId="selectedRecipe" />
       </Modal>
@@ -44,8 +50,9 @@ import { searchOutline } from 'ionicons/icons';
 import { SearchRecipe } from '@/components/SearchRecipe'
 import { RecipesList, Recipe } from '@/components/Recipes'
 import { Modal } from '@/components/Common'
-import { defineComponent, ref, watchEffect } from 'vue'
+import { computed, defineComponent, ref, watchEffect } from 'vue'
 import { useRoute, useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
 export default defineComponent({
   name: 'Search',
@@ -74,6 +81,10 @@ export default defineComponent({
     const selectedRecipe = ref<number>()
     const route = useRoute()
     const router = useRouter()
+
+    const store = useStore()
+    const userIsLogged = computed(() => store.getters.isTheUserLoggedIn)
+    const user = computed(() => store.getters.getUser)
 
     const handleProgress = (state: any) => {
       isSendingRequest.value = state
@@ -115,7 +126,9 @@ export default defineComponent({
       recipes,
       showModal,
       searchOutline,
-      selectedRecipe
+      selectedRecipe,
+      userIsLogged,
+      user
     }
   }
 })
@@ -123,7 +136,6 @@ export default defineComponent({
 
 <style scoped>
 .container {
-  text-align: center;
   position: absolute;
   left: 0;
   right: 0;
@@ -138,5 +150,24 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.user-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 5px;
+  margin: 5px;
+}
+.user-name {
+  margin-top: 2px;
+  font-size: 24px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.div-list {
+  padding: 5px;
 }
 </style>
