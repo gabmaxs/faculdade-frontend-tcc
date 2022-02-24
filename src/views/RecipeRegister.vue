@@ -51,13 +51,17 @@ export default defineComponent({
       returnMessage: ""
     })
     const handleEndAuth = (config) => {
-      configMessage.value = config
+      configMessage.value.showMessage = config.showMessage
+      configMessage.value.responseIsSuccessful = config.responseIsSuccessful
+      configMessage.value.returnMessage = config.returnMessage
     }
 
     const changeProgress = (value: boolean) => isProgress.value = value
 
     const handleEndForm = (config) => {
-      configMessage.value = config
+      configMessage.value.showMessage = config.showMessage
+      configMessage.value.responseIsSuccessful = config.responseIsSuccessful
+      configMessage.value.returnMessage = config.returnMessage
     }
 
     return {

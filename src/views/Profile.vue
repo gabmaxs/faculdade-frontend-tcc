@@ -65,7 +65,9 @@ export default defineComponent({
 
 
     const handleEnd = (config) => {
-      configMessage.value = config
+      configMessage.value.showMessage = config.showMessage
+      configMessage.value.responseIsSuccessful = config.responseIsSuccessful
+      configMessage.value.returnMessage = config.returnMessage
     }
 
     const handleDismiss = () => {
