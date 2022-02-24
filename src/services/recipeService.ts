@@ -2,7 +2,7 @@ import axios from 'axios'
 import { API_URL } from "@/API_URL"
 
 function searchRecipes(ingredients: string[], {page = 1, category, min_time, max_time}) {
-  return axios.get(`${API_URL}/recipe?page=${page}`, {
+  return axios.get(`${API_URL}/recipe?page=${page}&limit=200`, {
     params: {
       ingredients: ingredients,
       category,
