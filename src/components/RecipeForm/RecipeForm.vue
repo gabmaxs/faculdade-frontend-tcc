@@ -82,7 +82,7 @@ export default defineComponent({
             list_of_ingredients: {}
         })
         form.value.how_to_cook = computed(() => form.value.how_to_cook_text.split("\n"))
-        const categories = ref([])
+        const categories = ref<any>([])
 
         const handleFileUpload = (value) => form.value.image = value
 
@@ -132,7 +132,7 @@ export default defineComponent({
                 const response = await recipeService.saveRecipe(form.value, token)
                 handleSuccess(response.data)
             }
-            catch(e) {
+            catch(e: any) {
                 console.log(e.response)
                 handleError(e.response.data || e)
             }
@@ -143,7 +143,7 @@ export default defineComponent({
                 const {data} = await categoryService.getCategories()
                 categories.value = data.data
             }
-            catch(e) {
+            catch(e: any) {
                 console.log(e.reponse)
             }
         }
