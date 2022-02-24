@@ -132,7 +132,7 @@ export default defineComponent({
                 const response = await recipeService.saveRecipe(form.value, token)
                 handleSuccess(response.data)
             }
-            catch(e: any) {
+            catch(e) {
                 console.log(e.response)
                 handleError(e.response.data || e)
             }
@@ -143,7 +143,7 @@ export default defineComponent({
                 const {data} = await categoryService.getCategories()
                 categories.value = data.data
             }
-            catch(e: any) {
+            catch(e) {
                 console.log(e.reponse)
             }
         }

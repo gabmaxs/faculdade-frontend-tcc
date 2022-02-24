@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="filepond-div">
         <file-pond 
             ref="pond" :allow-multiple="false" @processfiles="handleFile" 
             labelIdle='Arraste ou <span class="filepond--label-action"> procure</span> o arquivo'
@@ -61,3 +61,9 @@ export default defineComponent({
     },
 })
 </script>
+
+<style scoped>
+.filepond-div {
+    padding: 0 7px 5px 7px;
+}
+</style>
