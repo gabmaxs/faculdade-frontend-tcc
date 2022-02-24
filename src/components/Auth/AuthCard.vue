@@ -60,7 +60,7 @@ export default defineComponent({
             context.emit("progress", true)
             try {
                 const response = await userService.login(user)
-                if(response.status === 200) await handleUserLogged(response.data)
+                if(response.status === 200) handleUserLogged(response.data)
             }
             catch(e) {
                 handleError(e.response.data || e)
@@ -72,7 +72,7 @@ export default defineComponent({
             context.emit("progress", true)
             try{
                 const response = await userService.register(user)
-                if(response.status === 201) await handleUserLogged(response.data)
+                if(response.status === 201) handleUserLogged(response.data)
             }
             catch(e) {
                 handleError(e.response.data || e)
