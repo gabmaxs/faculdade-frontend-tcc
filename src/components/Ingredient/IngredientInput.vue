@@ -2,10 +2,12 @@
     <ion-grid>
         <ion-row class="ion-align-items-center">
             <ion-col size="10">
-                <ion-item>
+                <div class="item-padding">
+                  <ion-item>
                     <ion-label position="floating">Ingrediente</ion-label>
                     <ion-input @ionInput="$emit('update:modelValue', $event.target.value)" :value="modelValue"></ion-input>
-                </ion-item>
+                  </ion-item>
+                </div>
                 <ion-row v-if="hasConfig" class="ion-align-items-center">
                     <ion-col size="6">
                         <ion-item>
@@ -113,3 +115,9 @@ export default defineComponent({
   }
 });
 </script>
+
+<style scoped>
+.item-padding {
+  padding: 0 5px;
+}
+</style>
