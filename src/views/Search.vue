@@ -11,12 +11,26 @@
     <ion-content :fullscreen="true" :forceOverscroll="true">
       
       <div class="container">
-        <ion-button v-if="recipes.length == 0" @click="openModal">Digitar Ingredientes</ion-button>
+        <ion-card @click="openModal" v-if="recipes.length == 0">
+          <ion-grid>
+            <ion-row>
+              <ion-col size="7" class="ion-text-start">
+                <h1>Buscar</h1>
+                <p>
+                  Nos conte os ingredientes que você tem e te falamos o que você pode fazer.
+                </p>  
+              </ion-col>
+              <ion-col size="5" class="icon-flex">
+                <ion-icon class="icon-bigger" :icon="searchOutline"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
       </div>
       <Modal :is-progress="isSendingRequest" title="Buscar receita" @onDismiss="closeModal" v-if="showModal">
         <SearchRecipe @success="handleSuccess" @progress="handleProgress" />
       </Modal>
-      <RecipesList :recipeList="recipes" @click="navigateToRecipe" />
+      <RecipesList v-if="recipes.length > 0" :recipeList="recipes" @click="navigateToRecipe" />
       <Modal text-close="Voltar" v-if="selectedRecipe" title="Detalhes da receita" @onDismiss="closeModalRecipe" >
         <Recipe :recipeId="selectedRecipe" />
       </Modal>
@@ -25,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonButtons, IonIcon } from '@ionic/vue'
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonButtons, IonIcon, IonCard, IonGrid, IonRow, IonCol } from '@ionic/vue'
 import { searchOutline } from 'ionicons/icons';
 import { SearchRecipe } from '@/components/SearchRecipe'
 import { RecipesList, Recipe } from '@/components/Recipes'
@@ -47,6 +61,10 @@ export default defineComponent({
     IonButton,
     IonButtons,
     IonIcon,
+    IonCard, 
+    IonGrid, 
+    IonRow, 
+    IonCol,
     Modal
   },
   setup() {
@@ -111,5 +129,14 @@ export default defineComponent({
   right: 0;
   top: 50%;
   transform: translateY(-50%);
+}
+
+.icon-bigger {
+  font-size: 50px;
+}
+.icon-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
