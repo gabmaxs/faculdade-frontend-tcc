@@ -1,6 +1,6 @@
 module.exports = {
     pwa: {
-        name: "icook",
+        name: "MyCook",
         manifestOptions: {
             description: "Aplicativo para a busca de receitas baseado nos ingredientes pesquisados.",
             screenshots: [
