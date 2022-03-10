@@ -1,6 +1,7 @@
 module.exports = {
     pwa: {
         name: "MyCook",
+        themeColor: "#ffc613",
         manifestOptions: {
             description: "Aplicativo para a busca de receitas baseado nos ingredientes pesquisados.",
             screenshots: [
