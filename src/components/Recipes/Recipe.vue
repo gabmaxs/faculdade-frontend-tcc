@@ -5,7 +5,14 @@
                 <img v-if="recipe.image" :src="recipe.image">
             </div>
             <ion-card-header>
-                <ion-card-title>{{ recipe.name }}</ion-card-title>
+                <ion-card-title class="title-name">
+                    <span>{{ recipe.name }}</span>
+                    <span class="icon-group" v-if="isUserLogged">
+                        <ion-icon v-if="isLiked" class="first-icon is-liked" :icon="heart" @click="handleLike" />
+                        <ion-icon v-else class="first-icon" :icon="heartOutline" @click="handleLike" />
+                        <ion-icon :icon="shareSocialOutline" />
+                    </span>
+                </ion-card-title>
                 <ion-card-subtitle>Tempo de preparo: {{ recipe.cooking_time }} min</ion-card-subtitle>
                 <ion-card-subtitle>Serve até: {{ recipe.number_of_servings }} pessoa(s)</ion-card-subtitle>
                 <ion-card-subtitle>{{ categoryName }}</ion-card-subtitle>
@@ -41,15 +48,18 @@
 
 <script lang="ts">
 import { categoryService, recipeService } from '@/services';
-import { defineComponent, ref } from 'vue';
-import { IonCardHeader, IonCardContent, IonCardTitle, IonCardSubtitle, IonList, IonListHeader, IonItem } from "@ionic/vue"
+import { computed, defineComponent, ref } from 'vue';
+import { IonCardHeader, IonCardContent, IonCardTitle, IonCardSubtitle, IonList, IonListHeader, IonItem, IonIcon } from "@ionic/vue"
+import { heartOutline, shareSocialOutline, heart } from 'ionicons/icons'
 import { Message } from "@/components/Common"
+import { useStore } from 'vuex';
 
 export default defineComponent({
     name: "Recipe",
     props: ["recipeId"],
-    components: { IonCardHeader, IonCardContent, IonCardTitle, IonCardSubtitle, IonList, IonListHeader, IonItem, Message },
+    components: { IonCardHeader, IonCardContent, IonCardTitle, IonCardSubtitle, IonList, IonListHeader, IonItem, IonIcon, Message },
     setup(props) {
+        const isLiked = ref(false)
         const recipe = ref()
         const categoryName = ref("")
         const messageConfig = ref({
@@ -57,6 +67,8 @@ export default defineComponent({
             text: "",
             show: false
         })
+        const store = useStore()
+        const isUserLogged = computed(() => store.getters.isTheUserLoggedIn)
 
         const resolveCategoryName = async (category_id) => categoryName.value = await categoryService.getCategoryName(category_id)
 
@@ -75,6 +87,11 @@ export default defineComponent({
             console.log(data, message)
         }
 
+        const handleLike = () => {
+            isLiked.value = !isLiked.value
+            recipeService.likeRecipe(recipe.value, store.getters.getToken)
+        }
+
         const getRecipe = async (id: number) => {
             try {
                 const response = await recipeService.getRecipe(id)
@@ -88,9 +105,15 @@ export default defineComponent({
         getRecipe(props.recipeId)
 
         return {
+            handleLike,
             recipe,
             categoryName,
-            messageConfig
+            messageConfig,
+            isUserLogged,
+            isLiked,
+            heartOutline,
+            shareSocialOutline,
+            heart
         }
     }
 })
@@ -100,5 +123,24 @@ export default defineComponent({
 .full-image img {
     width: 100%;
     height: auto;
+}
+
+.title-name {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.icon-group {
+    display: flex;
+    align-items: center;
+}
+
+.first-icon {
+    margin-right: 5px;
+}
+
+.is-liked {
+    color: #b8031b;
 }
 </style>
