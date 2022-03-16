@@ -7,9 +7,9 @@
             <ion-card-header>
                 <ion-card-title class="title-name">
                     <span>{{ recipe.name }}</span>
-                    <span class="icon-group" v-if="isUserLogged">
-                        <ion-icon v-if="isLiked" class="first-icon is-liked" :icon="heart" @click="handleLike" />
-                        <ion-icon v-else class="first-icon" :icon="heartOutline" @click="handleLike" />
+                    <span class="icon-group">
+                        <ion-icon v-if="isLiked && isUserLogged" class="first-icon is-liked" :icon="heart" @click="handleLike" />
+                        <ion-icon v-if="!isLiked && isUserLogged" class="first-icon" :icon="heartOutline" @click="handleLike" />
                         <ion-icon :icon="shareSocialOutline" />
                     </span>
                 </ion-card-title>
