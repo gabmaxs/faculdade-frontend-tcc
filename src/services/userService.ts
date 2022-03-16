@@ -57,11 +57,21 @@ function saveProfile(user: any, token: string) {
   })
 }
 
+function getLikedRecipes(token: string) {
+  return axios.get(`${API_URL}/user/recipe/like`, {
+    headers: {
+      "Accept": "application/json",
+      "Authorization": `Bearer ${token}`
+    }
+  })
+}
+
 const userService = {
     login,
     register,
     getProfile,
-    saveProfile
+    saveProfile,
+    getLikedRecipes
 }
 
 export default userService

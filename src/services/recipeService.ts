@@ -41,11 +41,21 @@ function getMeasure() {
   })
 }
 
+function likeRecipe(recipe: any, token) {
+  return axios.post(`${API_URL}/recipe/${recipe.id}/like`, null, {
+    headers: {
+      "Accept": "application/json",
+      "Authorization": `Bearer ${token}`
+    }
+  })
+}
+
 const recipeService = {
   searchRecipes,
   getRecipe,
   saveRecipe,
-  getMeasure
+  getMeasure,
+  likeRecipe
 }
 
 export default recipeService
