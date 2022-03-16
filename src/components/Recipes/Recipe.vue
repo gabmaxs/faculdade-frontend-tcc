@@ -10,7 +10,7 @@
                     <span class="icon-group">
                         <ion-icon v-if="isLiked && isUserLogged" class="first-icon is-liked" :icon="heart" @click="handleLike" />
                         <ion-icon v-if="!isLiked && isUserLogged" class="first-icon" :icon="heartOutline" @click="handleLike" />
-                        <ion-icon :icon="shareSocialOutline" />
+                        <ion-icon :icon="shareSocialOutline" id="share-button" @click="showShareOption = true" />
                     </span>
                 </ion-card-title>
                 <ion-card-subtitle>Tempo de preparo: {{ recipe.cooking_time }} min</ion-card-subtitle>
@@ -43,21 +43,43 @@
             </ion-card-content>
         </div>
         <Message @onDismiss="messageConfig.show = false" :show="messageConfig.show" :isSuccess="messageConfig.isSuccess" :message="messageConfig.text" />
+
+
+        <ion-popover :is-open="showShareOption" @ionPopoverDidDismiss="handlePopoverDismiss" @didDismiss="handlePopoverDismiss" @willDismiss="handlePopoverDismiss"
+            @ionPopoverWillDismiss="handlePopoverDismiss"
+        >
+            <div class="share-div">
+                <span class="share-title">Compartilhar</span>
+                <span class="share-icons">
+                    <ShareNetwork
+                        v-for="network in shareNetworks"
+                        :key="network.network"
+                        :network="network.network"
+                        :url="shareInfo.url"
+                        :title="shareInfo.title"
+                        :description="shareInfo.description"
+                        :hashtags="shareInfo.hashtags"
+                    >
+                        <ion-icon :icon="network.icon" :style="{color: network.color}"></ion-icon>
+                    </ShareNetwork>
+                </span>
+            </div>
+        </ion-popover>
     </div>
 </template>
 
 <script lang="ts">
 import { categoryService, recipeService } from '@/services';
 import { computed, defineComponent, ref } from 'vue';
-import { IonCardHeader, IonCardContent, IonCardTitle, IonCardSubtitle, IonList, IonListHeader, IonItem, IonIcon } from "@ionic/vue"
-import { heartOutline, shareSocialOutline, heart } from 'ionicons/icons'
+import { IonCardHeader, IonCardContent, IonCardTitle, IonCardSubtitle, IonList, IonListHeader, IonItem, IonPopover, IonIcon } from "@ionic/vue"
+import { heartOutline, shareSocialOutline, heart, logoFacebook, logoTwitter, logoWhatsapp } from 'ionicons/icons'
 import { Message } from "@/components/Common"
 import { useStore } from 'vuex';
 
 export default defineComponent({
     name: "Recipe",
     props: ["recipeId"],
-    components: { IonCardHeader, IonCardContent, IonCardTitle, IonCardSubtitle, IonList, IonListHeader, IonItem, IonIcon, Message },
+    components: { IonCardHeader, IonCardContent, IonCardTitle, IonCardSubtitle, IonList, IonListHeader, IonItem, IonPopover, IonIcon, Message },
     setup(props) {
         const recipe = ref()
         const categoryName = ref("")
@@ -69,6 +91,25 @@ export default defineComponent({
         const store = useStore()
         const isUserLogged = computed(() => store.getters.isTheUserLoggedIn)
         const isLiked = ref<boolean>(false)
+        const showShareOption = ref<boolean>(false)
+        const shareNetworks = ref<any>([
+            {
+                network: "facebook",
+                icon: logoFacebook,
+                color: "#4267B2",
+            },
+            {
+                network: "twitter",
+                icon: logoTwitter,
+                color: "#1DA1F2",
+            },
+            {
+                network: "whatsapp",
+                icon: logoWhatsapp,
+                color: "#25D366",
+            }
+        ])
+        const shareInfo = ref<any>()
 
         const resolveIsLiked = async () => {
             const isLikedResponse = await recipeService.checkLikeRecipe(recipe.value,store.getters.getToken)
@@ -83,7 +124,13 @@ export default defineComponent({
             messageConfig.value.show = true
             recipe.value = data
             resolveIsLiked()
-            resolveCategoryName(data.category_id)
+            await resolveCategoryName(data.category_id)
+            shareInfo.value = {
+                title: `Venha conferir essa nova receita de ${data.name}`,
+                description: `Uma nova receita de ${data.name} para incrementar seu repertório de ${categoryName.value}`,
+                url: `${window.location.origin}/search?recipeId=${data.id}`,
+                hashtags: "culinaria,receitas"
+            }
         }
 
         const handleError = ({data, message}: {data: Array<any>; message: string}) => {
@@ -96,6 +143,11 @@ export default defineComponent({
         const handleLike = () => {
             isLiked.value = !isLiked.value
             recipeService.likeRecipe(recipe.value, store.getters.getToken)
+        }
+
+        const handlePopoverDismiss = () => {
+            console.log("eoq")
+            showShareOption.value = false
         }
 
         const getRecipe = async (id: number) => {
@@ -112,6 +164,7 @@ export default defineComponent({
 
         return {
             handleLike,
+            handlePopoverDismiss,
             recipe,
             categoryName,
             messageConfig,
@@ -119,7 +172,10 @@ export default defineComponent({
             isLiked,
             heartOutline,
             shareSocialOutline,
-            heart
+            heart,
+            showShareOption,
+            shareNetworks,
+            shareInfo
         }
     }
 })
@@ -148,5 +204,21 @@ export default defineComponent({
 
 .is-liked {
     color: #b8031b;
+}
+
+.share-div {
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    font-size: 18px;
+}
+
+.share-icons {
+    padding-top: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 26px;
 }
 </style>

@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import router from './router';
+import router from './router'
+import VueSocialSharing from 'vue-social-sharing'
 import './registerServiceWorker'
 
 import { IonicVue } from '@ionic/vue';
@@ -28,6 +29,7 @@ import store from './store'
 
 const app = createApp(App).use(store)
   .use(IonicVue)
+  .use(VueSocialSharing)
   .use(router);
 
 router.isReady().then(() => {

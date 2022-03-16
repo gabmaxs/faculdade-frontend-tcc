@@ -24,6 +24,7 @@
     "vue": "^3.0.0-0",
     "vue-filepond": "^7.0.0",
     "vue-router": "^4.0.0-0",
+    "vue-social-sharing": "^4.0.0-alpha4",
     "vue-uuid": "^2.0.2",
     "vuex": "^4.0.0-0"
   },
