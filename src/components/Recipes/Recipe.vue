@@ -59,7 +59,6 @@ export default defineComponent({
     props: ["recipeId"],
     components: { IonCardHeader, IonCardContent, IonCardTitle, IonCardSubtitle, IonList, IonListHeader, IonItem, IonIcon, Message },
     setup(props) {
-        const isLiked = ref(false)
         const recipe = ref()
         const categoryName = ref("")
         const messageConfig = ref({
@@ -69,6 +68,12 @@ export default defineComponent({
         })
         const store = useStore()
         const isUserLogged = computed(() => store.getters.isTheUserLoggedIn)
+        const isLiked = ref<boolean>(false)
+
+        const resolveIsLiked = async () => {
+            const isLikedResponse = await recipeService.checkLikeRecipe(recipe.value,store.getters.getToken)
+            isLiked.value = isLikedResponse.data.data || false
+        }
 
         const resolveCategoryName = async (category_id) => categoryName.value = await categoryService.getCategoryName(category_id)
 
@@ -77,6 +82,7 @@ export default defineComponent({
             messageConfig.value.isSuccess = true
             messageConfig.value.show = true
             recipe.value = data
+            resolveIsLiked()
             resolveCategoryName(data.category_id)
         }
 

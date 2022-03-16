@@ -2,7 +2,8 @@ const user = localStorage.getItem('user')
 
 export default {
     state: {
-      user: user ? JSON.parse(user) : {}
+      user: user ? JSON.parse(user) : {},
+      likedRecipes: []
     },
     mutations: {
       setUser(state, payload) {

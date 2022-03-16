@@ -50,12 +50,22 @@ function likeRecipe(recipe: any, token) {
   })
 }
 
+function checkLikeRecipe(recipe: any, token) {
+  return axios.get(`${API_URL}/recipe/${recipe.id}/like`, {
+    headers: {
+      "Accept": "application/json",
+      "Authorization": `Bearer ${token}`
+    }
+  })
+}
+
 const recipeService = {
   searchRecipes,
   getRecipe,
   saveRecipe,
   getMeasure,
-  likeRecipe
+  likeRecipe,
+  checkLikeRecipe
 }
 
 export default recipeService
